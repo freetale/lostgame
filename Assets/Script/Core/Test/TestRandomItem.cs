@@ -24,8 +24,6 @@ public class TestRandomItem : MonoBehaviour
         StringBuilder sb = new StringBuilder();
         sb.Append("Name: ");
         sb.Append(item.Name);
-        sb.Append(" Appearance: ");
-        sb.Append(item.Appearance);
         sb.Append(" Property: ");
         foreach (var property in item.Property)
         {

@@ -10,7 +10,16 @@ public class ItemPrototype : MonoBehaviour, IDropItem
 
     public Rigidbody2D Rigidbody;
 
-    public GeneratedItem Bind;
+    public PropertyItem Property { get; private set; }
+
+    public void Bind(PropertyItem item)
+    {
+        Property = item;
+        if (Property != null)
+        {
+            SpriteRenderer.sprite = item.Appearance;
+        }
+    }
 
     public void OnDrop()
     {

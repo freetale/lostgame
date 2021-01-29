@@ -24,8 +24,18 @@ public class ItemRandomizer
             string value = item.ItemProperties[i].Values.PickRandom();
             generated.Property.Add(key, value);
         }
-        string propertyAppearance = generated.Property[item.AppearancesKey];
-        generated.Appearance = item.ItemAppearances.First(i => i.Value == propertyAppearance).Sprite;
+        
         return generated;
+    }
+
+    public PropertyItem MatchPrototype(GeneratedItem generated)
+    {
+        var item = ItemList.Items.First(i => i.Name == generated.Name);
+        PropertyItem property = new PropertyItem();
+        property.GeneratedItem = generated;
+        property.Prototype = item.Prototype;
+        string propertyAppearance = generated.Property[item.AppearancesKey];
+        property.Appearance = item.ItemAppearances.First(i => i.Value == propertyAppearance).Sprite;
+        return property;
     }
 }
