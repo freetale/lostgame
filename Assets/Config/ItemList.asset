@@ -29,6 +29,8 @@ MonoBehaviour:
         - Red
         - Green
         - Blue
+      Prototype: {fileID: 2325164575644152457, guid: 6d55c575858a0a943b578263d929f97e,
+        type: 3}
       AppearancesKey: Color
       ItemAppearances:
       - Value: Red

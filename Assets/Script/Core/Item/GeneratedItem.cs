@@ -6,5 +6,6 @@ public class GeneratedItem
 {
     public string Name;
     public Dictionary<string, string> Property = new Dictionary<string, string>();
+    public GameObject Prototype;
     public Sprite Appearance;
 }

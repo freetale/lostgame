@@ -9,7 +9,6 @@ public class ItemRandomizer
 
     public GeneratedItem PickOne()
     {
-        // TODO: filter item
         var possibleItem = ItemList.Items.Select(i => i);
         var item = possibleItem.PickRandom();
         return CreateItem(item);

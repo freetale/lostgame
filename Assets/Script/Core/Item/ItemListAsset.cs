@@ -29,8 +29,10 @@ public class Item
     public bool Exclusive = false;
 
     [ValidateInput(nameof(IsAppearanceFine))]
+    [ReorderableList]
     public ItemProperty[] ItemProperties;
 
+    public GameObject Prototype;
     public string AppearancesKey;
     public ItemAppearance[] ItemAppearances;
 
@@ -60,12 +62,6 @@ public class ItemProperty
 {
     public string Key;
     public string[] Values;
-
-    [Button]
-    public void CreateAppearance()
-    {
-
-    }
 }
 
 [Serializable]
