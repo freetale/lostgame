@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 351db72f846e9e948847e140d4ac28e3, type: 3}
+  m_Name: ItemList
+  m_EditorClassIdentifier: 
+  ItemList:
+    Items:
+    - Name: Watch
+      CanBeSubSet: 1
+      CanBeSuperSet: 0
+      Exclusive: 0
+      ItemProperties:
+      - Key: Brand
+        Values:
+        - Alpaca
+        - Bacon
+        - Cinamon
+      - Key: Color
+        Values:
+        - Red
+        - Green
+        - Blue
+      AppearancesKey: Color
+      ItemAppearances:
+      - Value: Red
+        Sprite: {fileID: 0}
+      - Value: Blue
+        Sprite: {fileID: 0}
+      - Value: Green
+        Sprite: {fileID: 0}
