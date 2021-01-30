@@ -8,9 +8,24 @@ public class SlotPrototype : MonoBehaviour, IDropItemable
     public Collider2D Collider;
 
     public ItemPrototype BindItem { get; private set; }
+    public bool IsEmpty => BindItem == null;
 
-    public void Drop(ItemPrototype prototype)
+    public bool IsTrash;
+
+    public void ItemEnter(ItemPrototype prototype)
     {
-        prototype.OnEnterSlot();
+        BindItem = prototype;
+        prototype.SetParent(ItemLocation);
+        prototype.UpdateLocalPosition(Vector3.zero);
+        if (IsTrash)
+        {
+            prototype.SetTrash();
+        }
+    }
+
+    public void ItemLeave(ItemPrototype prototype)
+    {
+        BindItem = null;
+        prototype.SetParent(null);
     }
 }

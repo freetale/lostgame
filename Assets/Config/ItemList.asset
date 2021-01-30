@@ -26,16 +26,59 @@ MonoBehaviour:
         - Cinamon
       - Key: Color
         Values:
-        - Red
-        - Green
         - Blue
+        - Green
+        - Light Blue
+        - Red
+        - White
+        - Yellow
       Prototype: {fileID: 2325164575644152457, guid: 6d55c575858a0a943b578263d929f97e,
         type: 3}
       AppearancesKey: Color
       ItemAppearances:
-      - Value: Red
-        Sprite: {fileID: 0}
       - Value: Blue
-        Sprite: {fileID: 0}
+        Sprite: {fileID: 21300000, guid: 8986d50d6a009fa4a8e58e8926a11398, type: 3}
       - Value: Green
-        Sprite: {fileID: 0}
+        Sprite: {fileID: 21300000, guid: 19b79366bfc52e745ab6854d347b7c95, type: 3}
+      - Value: Light Blue
+        Sprite: {fileID: 21300000, guid: 9faf662ab2444ac47b1420c8d0ecd864, type: 3}
+      - Value: Red
+        Sprite: {fileID: 21300000, guid: bb9a91f3f989a5d4989cc5bf1cf3610a, type: 3}
+      - Value: White
+        Sprite: {fileID: 21300000, guid: 56cc9704b88ab41438a233e0e3d83218, type: 3}
+      - Value: Yellow
+        Sprite: {fileID: 21300000, guid: c6354e82881843c418a7f483b704e896, type: 3}
+    - Name: Watch
+      CanBeSubSet: 1
+      CanBeSuperSet: 0
+      Exclusive: 0
+      ItemProperties:
+      - Key: Brand
+        Values:
+        - Alpaca
+        - Bacon
+        - Cinamon
+      - Key: Color
+        Values:
+        - Blue
+        - Green
+        - Light Blue
+        - Red
+        - White
+        - Yellow
+      Prototype: {fileID: 2325164575644152457, guid: 6d55c575858a0a943b578263d929f97e,
+        type: 3}
+      AppearancesKey: Color
+      ItemAppearances:
+      - Value: Blue
+        Sprite: {fileID: 21300000, guid: 8986d50d6a009fa4a8e58e8926a11398, type: 3}
+      - Value: Green
+        Sprite: {fileID: 21300000, guid: 19b79366bfc52e745ab6854d347b7c95, type: 3}
+      - Value: Light Blue
+        Sprite: {fileID: 21300000, guid: 9faf662ab2444ac47b1420c8d0ecd864, type: 3}
+      - Value: Red
+        Sprite: {fileID: 21300000, guid: bb9a91f3f989a5d4989cc5bf1cf3610a, type: 3}
+      - Value: White
+        Sprite: {fileID: 21300000, guid: 56cc9704b88ab41438a233e0e3d83218, type: 3}
+      - Value: Yellow
+        Sprite: {fileID: 21300000, guid: c6354e82881843c418a7f483b704e896, type: 3}
