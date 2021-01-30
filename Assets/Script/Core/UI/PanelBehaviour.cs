@@ -56,5 +56,14 @@ public class PanelBehaviour : MonoBehaviour
         UnityEditor.EditorUtility.SetDirty(transform);
         UnityEditor.EditorUtility.SetDirty(gameObject);
     }
+
+    [NaughtyAttributes.Button]
+    protected void ObjectOpen()
+    {
+        transform.localScale = Vector3.one;
+        gameObject.SetActive(true);
+        UnityEditor.EditorUtility.SetDirty(transform);
+        UnityEditor.EditorUtility.SetDirty(gameObject);
+    }
 #endif
 }

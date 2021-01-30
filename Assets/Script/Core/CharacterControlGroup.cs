@@ -1,5 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using NaughtyAttributes;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,6 +24,8 @@ public class CharacterControlGroup : MonoBehaviour
     public string PoliceMoveInAnimation;
     public string PoliceMoveOutAnimation;
 
+    public CharacterPrototype CharacterPrototype;
+
     public async UniTask Play(CharacterAnimation animation)
     {
         var name = GetAnimationName(animation);
@@ -44,5 +47,10 @@ public class CharacterControlGroup : MonoBehaviour
                 Debug.Log("Warning animation missing" + animation);
                 return NoneAnimation;
         }
+    }
+
+    internal void Bind(CharacterInfo characterInfo)
+    {
+        CharacterPrototype.Bind(characterInfo);
     }
 }

@@ -50,6 +50,7 @@ public class Randomizer
         info.HairIndex = UnityEngine.Random.Range(0, character.Hair.Length);
         info.HeadIndex = UnityEngine.Random.Range(0, character.Head.Length);
         info.BodyIndex = UnityEngine.Random.Range(0, character.Body.Length);
+        info.Relaytion = character.Relaytion.PickRandom();
         return info;
     }
 }

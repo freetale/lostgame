@@ -12,6 +12,7 @@ public enum QuationAction
     WhatLostItem,
     ThisOne,
     HereYouAre,
+    CameBackTomorrow,
 }
 
 public class QuationPopup : PanelBehaviour
@@ -22,6 +23,7 @@ public class QuationPopup : PanelBehaviour
     public Button WhatLostItemButton;
     public Button ThisOneButton;
     public Button HereYouAreButton;
+    public Button ComebackTomorrowButton;
 
     public Action<QuationAction> Action;
 
@@ -33,6 +35,7 @@ public class QuationPopup : PanelBehaviour
         WhatLostItemButton.onClick.AddListener(WhatLostItem_OnClick);
         ThisOneButton.onClick.AddListener(ThisOne_OnClick);
         HereYouAreButton.onClick.AddListener(HereYouAre_OnClick);
+        ComebackTomorrowButton.onClick.AddListener(ComebackTomorrow_OnClick);
     }
 
     private void WhatYouRoom_OnClick()
@@ -63,6 +66,11 @@ public class QuationPopup : PanelBehaviour
     private void HereYouAre_OnClick()
     {
         Action(QuationAction.HereYouAre);
+    }
+
+    private void ComebackTomorrow_OnClick()
+    {
+        Action(QuationAction.CameBackTomorrow);
     }
 
     public void SetSubmitItem(bool item) 

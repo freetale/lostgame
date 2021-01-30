@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cysharp.Threading.Tasks;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -44,6 +45,10 @@ public class GameplayManager : MonoBehaviour
     private List<CharacterInfo> YesterDayCustomer = new List<CharacterInfo>();
     [NonSerialized]
     private List<ItemPrototype> StandAloneItem = new List<ItemPrototype>();
+    [NonSerialized]
+    private CharacterInfo CurrentCustomer;
+
+    public TalkScriptAsset TalkScriptAsset;
 
     private void Awake()
     {
@@ -65,12 +70,13 @@ public class GameplayManager : MonoBehaviour
         UIManager.QuationPopup.Action = OnQuation;
         PickupManager.OnPickup = OnPickUp;
         PickupManager.OnDropdown = OnDropDown;
+        TalkScriptAsset = new TalkScriptAsset();
     }
 
     private void Start()
     {
         ResetDay();
-        UIManager.SetTalkText("Nani");
+        CustomerComing();
     }
 
     private void Update()
@@ -96,6 +102,35 @@ public class GameplayManager : MonoBehaviour
         {
             ShowEndDayUI();
         }
+    }
+
+    private void CustomerComing()
+    {
+        if (TodayCustomer.Count == 0)
+        {
+            if (YesterDayCustomer.Count == 0)
+            {
+                Debug.Log("No more customer");
+            }
+            else
+            {
+                Summon(YesterDayCustomer[0]).Forget();
+                YesterDayCustomer.RemoveAt(0);
+            }
+        }
+        else
+        {
+            Summon(TodayCustomer[0]).Forget();
+            TodayCustomer.RemoveAt(0);
+        }
+    }
+
+    private async UniTask Summon(CharacterInfo characterInfo)
+    {
+        CurrentCustomer = characterInfo;
+        CharacterControlGroup.Bind(characterInfo);
+        await CharacterControlGroup.Play(CharacterAnimation.MoveIn);
+        UIManager.SetTalkText(string.Format(TalkScriptAsset.InComing, characterInfo.LookingForItem.Name));
     }
 
     private void CustomerExit()
