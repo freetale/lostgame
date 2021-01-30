@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -18,6 +19,7 @@ public class ItemRandomizer
     {
         GeneratedItem generated = new GeneratedItem();
         generated.Name = item.Name;
+        generated.Guid = Guid.NewGuid();
         for (int i = 0; i < item.ItemProperties.Length; i++)
         {
             string key = item.ItemProperties[i].Key;

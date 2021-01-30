@@ -18,6 +18,7 @@ public class CharacterInfo
     public int BodyIndex;
     public int HairIndex;
 
+    public bool IsRelaytive;
     public bool IsImposter;
 
     public GeneratedItem LookingForItem;

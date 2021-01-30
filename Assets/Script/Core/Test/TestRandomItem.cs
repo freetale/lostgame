@@ -32,6 +32,8 @@ public class TestRandomItem : MonoBehaviour
             sb.Append(property.Value);
             sb.Append(",");
         }
+        sb.Append("GUID:");
+        sb.Append(item.Guid);
         return sb.ToString();
     }
 }
