@@ -13,15 +13,21 @@ public class ItemPrototype : MonoBehaviour
 
     public Rigidbody2D Rigidbody;
 
+    [field: NonSerialized]
     public PropertyItem Property { get; private set; }
     
     public IDropItemable AttachTo { get; set; }
 
+    [field: NonSerialized]
     public ItemInfo ItemInfo { get; private set; }
-
+    
     public void Bind(ItemInfo itemInfo)
     {
-        var property = GameplayManager.Instance.Randomizer.MatchProperty(ItemInfo);
+        if (itemInfo == null)
+        {
+            throw new ArgumentNullException(nameof(itemInfo));
+        }
+        var property = GameplayManager.Instance.Randomizer.MatchProperty(itemInfo);
         Property = property;
         if (Property != null)
         {

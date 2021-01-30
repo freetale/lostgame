@@ -3415,7 +3415,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1081138754}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.03, y: 0.99, z: 0}
+  m_LocalPosition: {x: -8.14, y: 0.99, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -3433,9 +3433,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c3e8bcdc0b475d458091b64d178bed2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpawnLocation: {fileID: 0}
-  SpawnSpaceX: 0
-  ItemPool: {fileID: 0}
+  SpawnLocation: {fileID: 1081138755}
+  SpawnSpaceX: 1
+  ItemPool: {fileID: 1224164492}
 --- !u!1001 &1094826050
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4397,8 +4397,9 @@ MonoBehaviour:
   TalkComputer: {fileID: 1565512427}
   UIManager: {fileID: 1984779927}
   InspectPopup: {fileID: 1198828195}
-  ItemSpawner: {fileID: 0}
+  ItemSpawner: {fileID: 1081138756}
   SecondPerDay: 60
+  DialogueInterval: 3
 --- !u!4 &1224164491
 Transform:
   m_ObjectHideFlags: 0
@@ -6159,7 +6160,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 403, y: 285}
+  m_AnchoredPosition: {x: 403.3, y: 286.34}
   m_SizeDelta: {x: 549, y: 161}
   m_Pivot: {x: 0.1, y: 0}
 --- !u!114 &1583107097

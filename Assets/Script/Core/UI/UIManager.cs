@@ -47,4 +47,11 @@ public class UIManager : MonoBehaviour
     {
         DescriptionPopup.Close();
     }
+
+    internal void HideUserUI()
+    {
+        PolicePopup.Close();
+        TalkPopup.Close();
+        DescriptionPopup.Close();
+    }
 }

@@ -40,9 +40,12 @@ public class TalkScriptAsset
     public string WrongItem = "No, not this one";
     public string ComeBackTomorrow = "I'll be back tomorrow";
 
-    public string Police = "Dear customer this way please";
-    public string ThiftArrest = "Oh f**";
-    public string WrongArrest = "What is this all about, I’m gonna tell your manager";
+    public string PoliceArrsting = "This taste… Is the taste of LIAR";
+
+    public string[] ThiftArrest = { "That’s sexual harassment", "I hate this meme", "This must be an attack from an enemy stand!" };
+    public string WrongArrest1 = "I’m not a thief";
+    public string WrongArrest2Police = "I don’t care";
+    public string WrongArrest3 = "NOOOOOOOO";
 
     public string BossNotify = "That’s was innocent customer -1 for your performance";
     public string BossThiftNotify = "That’s person a thief -1 for your performance";

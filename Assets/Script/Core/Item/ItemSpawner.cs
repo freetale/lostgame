@@ -11,6 +11,8 @@ public class ItemSpawner : MonoBehaviour
 
     public ItemPool ItemPool;
 
+    public System.Action<ItemPrototype> OnSpawn;
+
     public void Spawn(ItemInfo[] items)
     {
         for (int i = 0; i < items.Length; i++)
@@ -20,6 +22,7 @@ public class ItemSpawner : MonoBehaviour
             var position = SpawnLocation.position;
             position.x += i * SpawnSpaceX;
             prototype.UpdatePosition(position);
+            OnSpawn(prototype);
         }
     }
 }

@@ -14,6 +14,7 @@ public class GameplayManager : MonoBehaviour
     [Header("Asset")]
     public ItemListAsset ItemListAsset;
     public CharacterListAsset CharacterListAsset;
+    public TalkScriptAsset TalkScriptAsset;
 
     public CharacterControlGroup CharacterControlGroup;
 
@@ -32,6 +33,7 @@ public class GameplayManager : MonoBehaviour
     public ItemSpawner ItemSpawner;
 
     public float SecondPerDay = 60;
+    public float DialogueInterval = 3f;
     private float currentTime;
 
     private bool IsPlaying;
@@ -41,12 +43,11 @@ public class GameplayManager : MonoBehaviour
     private List<CharacterInfo> TodayCustomer = new List<CharacterInfo>();
     [NonSerialized]
     private List<CharacterInfo> YesterDayCustomer = new List<CharacterInfo>();
-    [NonSerialized]
+    [NaughtyAttributes.ShowNonSerializedField]
     private List<ItemPrototype> StandAloneItem = new List<ItemPrototype>();
     [NonSerialized]
     private CharacterInfo CurrentCustomer;
 
-    public TalkScriptAsset TalkScriptAsset;
 
     [NaughtyAttributes.ShowNonSerializedField]
     private int CurrentDayIndex = 0;
@@ -67,6 +68,7 @@ public class GameplayManager : MonoBehaviour
         UIManager.QuationPopup.Action = OnQuation;
         PickupManager.OnPickup = OnPickUp;
         PickupManager.OnDropdown = OnDropDown;
+        ItemSpawner.OnSpawn = OnSpawn;
         TalkScriptAsset = new TalkScriptAsset();
     }
 
@@ -108,6 +110,8 @@ public class GameplayManager : MonoBehaviour
         CurrentDayIndex = index;
         var todayRandom = SessionRandom.Days[index];
         TodayCustomer.AddRange(todayRandom.Characters);
+        ItemSpawner.Spawn(todayRandom.ItemInfo);
+        
     }
 
     private void CustomerComing()
@@ -131,6 +135,11 @@ public class GameplayManager : MonoBehaviour
         }
     }
 
+    private void OnSpawn(ItemPrototype obj)
+    {
+        StandAloneItem.Add(obj);
+    }
+
     private async UniTask SummonCustomer(CharacterInfo characterInfo)
     {
         CurrentCustomer = characterInfo;
@@ -150,7 +159,37 @@ public class GameplayManager : MonoBehaviour
     }
     private void OnCallPolice()
     {
+        if (CurrentCustomer == null)
+        {
+            return;
+        }
+        var isThift = CurrentCustomer.IsImposter;
+        CurrentCustomer = null;
+        IsVisiting = false;
+        UIManager.HideUserUI();
+        PoliceComingAsync(isThift).Forget();
+    }
 
+    private async UniTask PoliceComingAsync(bool isThift)
+    {
+        await CharacterControlGroup.Play(CharacterAnimation.PoliceMoveIn);
+        UIManager.SetPoliceText(TalkScriptAsset.PoliceArrsting);
+        await UniTask.Delay(TimeSpan.FromSeconds(DialogueInterval));
+        if (isThift)
+        {
+            UIManager.SetTalkText(TalkScriptAsset.ThiftArrest.PickRandom());
+            await UniTask.Delay(TimeSpan.FromSeconds(DialogueInterval / 2));
+            await CharacterControlGroup.Play(CharacterAnimation.PoliceMoveout);
+        }
+        else
+        {
+            UIManager.SetTalkText(TalkScriptAsset.WrongArrest1);
+            await UniTask.Delay(TimeSpan.FromSeconds(DialogueInterval));
+            UIManager.SetPoliceText(TalkScriptAsset.WrongArrest2Police);
+            await UniTask.Delay(TimeSpan.FromSeconds(DialogueInterval));
+            UIManager.SetTalkText(TalkScriptAsset.WrongArrest3);
+            await CharacterControlGroup.Play(CharacterAnimation.PoliceMoveout);
+        }
     }
 
     private void OnQuation(QuationAction quation)
@@ -213,9 +252,10 @@ public class GameplayManager : MonoBehaviour
 
     public void InspectItem(ItemPrototype item)
     {
-        Debug.Log("Inspecting" + item);
         if (item != null)
         {
+            Debug.Log("Inspecting" + item);
+            UIManager.OpenDescription(item.ItemInfo);
             InspectPopup.Bind(item);
             if (!InspectPopup.IsOpen)
             {
