@@ -104,17 +104,17 @@ public class PickupManager : MonoBehaviour
         }
         else
         {
-            if (!reciver.IsEmpty && reciver.CanDrop(pickitem))
-            {
-                DropToFloor();
-            }
-            else
+            if (reciver.IsEmpty && reciver.CanDrop(pickitem))
             {
                 pickitem.AttachTo = reciver;
                 pickitem.OnDrop();
                 pickitem.OnEnterSlot();
                 reciver.ItemEnter(pickitem);
                 pickitem = null;
+            }
+            else
+            {
+                DropToFloor();
             }
         }
     }

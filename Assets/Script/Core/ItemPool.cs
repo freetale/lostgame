@@ -16,6 +16,7 @@ public class ItemPool : MonoBehaviour
         {
             item = InstanceOne();
         }
+        item.gameObject.SetActive(true);
         return item;
     }
 

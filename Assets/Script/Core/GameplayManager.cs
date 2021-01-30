@@ -20,6 +20,9 @@ public class GameplayManager : MonoBehaviour
 
     private SaveData SaveData;
 
+    public Transform SpawnLocation;
+    public float SpawnSpaceX;
+
     private void Awake()
     {
         Instance = this;
@@ -28,16 +31,20 @@ public class GameplayManager : MonoBehaviour
 
         for (int i = 0; i < 5; i++)
         {
-            CreateItem();
+            var prototype =  CreateItem();
+            var position = SpawnLocation.position;
+            position.x += i * SpawnSpaceX;
+            prototype.UpdatePosition(position);
         }
     }
 
-    private void CreateItem()
+    private ItemPrototype CreateItem()
     {
         var generate = Randomizer.PickOne();
         var propertyItem = Randomizer.MatchProperty(generate);
         var prototype = ItemPool.PickOne();
         prototype.Bind(propertyItem);
+        return prototype;
     }
 
     public InspectPopup InspectPopup;
