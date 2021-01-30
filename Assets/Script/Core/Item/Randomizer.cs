@@ -4,9 +4,17 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+public class TodayRandom
+{
+    public ItemInfo[] ItemInfo;
+
+    public CharacterInfo[] Characters;
+}
+
 public class Randomizer
 {
     public ItemList ItemList;
+    public CharacterListAsset CharacterListAsset;
 
     public ItemInfo PickOne()
     {
@@ -44,7 +52,7 @@ public class Randomizer
         return property;
     }
 
-    public CharacterInfo RandomCharacter(CharacterListAsset character)
+    private CharacterInfo RandomCharacter(CharacterListAsset character)
     {
         CharacterInfo info = new CharacterInfo();
         info.HairIndex = UnityEngine.Random.Range(0, character.Hair.Length);

@@ -42,15 +42,4 @@ public class CharacterPrototype : MonoBehaviour
         HappyIcon.SetActive(emotion == Emotion.Happy);
     }
 
-    [NaughtyAttributes.Button]
-    public void RandomCharacter()
-    {
-        if (!Application.isPlaying)
-        {
-            return;
-        }
-        Randomizer randomizer = new Randomizer();
-        var info = randomizer.RandomCharacter(CharacterListAsset);
-        Bind(info);
-    }
 }

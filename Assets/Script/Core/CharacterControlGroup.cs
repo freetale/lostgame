@@ -49,8 +49,13 @@ public class CharacterControlGroup : MonoBehaviour
         }
     }
 
-    internal void Bind(CharacterInfo characterInfo)
+    public void Bind(CharacterInfo characterInfo)
     {
         CharacterPrototype.Bind(characterInfo);
+    }
+
+    public void SetEmoticon(Emotion emotion)
+    {
+        CharacterPrototype.SetEmotion(emotion);
     }
 }

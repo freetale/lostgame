@@ -19,6 +19,18 @@ public class ItemInfo
 
     public List<ItemInfo> ItemInfos = new List<ItemInfo>();
 
+    public ItemInfo CloneWithNewID()
+    {
+        var info = new ItemInfo()
+        {
+            Guid = Guid.NewGuid(),
+            Name = Name,
+            Room = Room,
+            Location = Location,
+            Property = new Dictionary<string, string>(Property),
+        };
+        return info;
+    }
 }
 
 public class PropertyItem
