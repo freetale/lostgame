@@ -153,7 +153,7 @@ public class GameplayManager : MonoBehaviour
         UIManager.SetTalkText(string.Format(TalkScriptAsset.InComing, characterInfo.LookingForItem.Name, characterInfo.Name));
     }
 
-    private void CustomerExit()
+    private void CharacterExit()
     {
         CurrentCustomer = null;
         IsVisiting = false;
@@ -161,7 +161,12 @@ public class GameplayManager : MonoBehaviour
         {
             ShowEndDayUI();
         }
+        else
+        {
+            CustomerComing();
+        }
     }
+
     private void OnCallPolice()
     {
         if (CurrentCustomer == null)
@@ -205,6 +210,10 @@ public class GameplayManager : MonoBehaviour
         var today = looking.Date == CurrentDayIndex;
         var text = GetQuation(quation, looking, today, CurrentCustomer.IsImposter);
         UIManager.SetTalkText(text);
+        if (quation != QuationAction.HereYouAre)
+        {
+            CurrentCustomer.Satisfaction--;
+        }
         if (quation == QuationAction.CameBackTomorrow)
         {
             CustommerComeTomorrow().Forget();
@@ -263,7 +272,7 @@ public class GameplayManager : MonoBehaviour
         CurrentCustomer = null;
         await UniTask.Delay(TimeSpan.FromSeconds(DialogueInterval));
         await CharacterControlGroup.Play(CharacterAnimation.MoveOut);
-        CustomerExit();
+        CharacterExit();
     }
 
     private async UniTask CustomerTakeAway()
@@ -271,7 +280,7 @@ public class GameplayManager : MonoBehaviour
         CurrentCustomer = null;
         ReturnOneItemToPool();
         await CharacterControlGroup.Play(CharacterAnimation.MoveOut);
-        CustomerExit();
+        CharacterExit();
     }
 
     private async UniTask ImposterTakeAway()
@@ -280,7 +289,7 @@ public class GameplayManager : MonoBehaviour
         ReturnOneItemToPool();
         await CharacterControlGroup.Play(CharacterAnimation.MoveOut);
         await UIManager.ShowBossMessage(TalkScriptAsset.BossThiftNotify);
-        CustomerExit();
+        CharacterExit();
     }
 
     private void ReturnOneItemToPool()
