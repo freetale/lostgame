@@ -7,7 +7,7 @@ public class SlotPrototype : MonoBehaviour, IDropItemable
     public Transform ItemLocation;
     public Collider2D Collider;
 
-    public ItemPrototype BindItem;
+    public ItemPrototype BindItem { get; private set; }
 
     public void Drop(ItemPrototype prototype)
     {
