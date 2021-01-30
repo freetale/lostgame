@@ -10,12 +10,6 @@ public interface IDropItemable
     void ItemLeave(ItemPrototype prototype);
     bool CanDrop(ItemPrototype pickitem);
 }
-public interface IDropItem
-{
-    void UpdatePosition(Vector3 position);
-    void OnPick();
-    void OnDrop();
-}
 
 public interface IInteractable
 {

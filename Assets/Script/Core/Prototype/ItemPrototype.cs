@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class ItemPrototype : MonoBehaviour, IDropItem
+public class ItemPrototype : MonoBehaviour
 {
     public Collider2D Collider;
 
@@ -39,7 +39,6 @@ public class ItemPrototype : MonoBehaviour, IDropItem
     public void OnDrop()
     {
         Rigidbody.constraints = RigidbodyConstraints2D.None;
-        DropAnimation();
     }
 
     public void OnPick()
@@ -50,6 +49,7 @@ public class ItemPrototype : MonoBehaviour, IDropItem
     public void OnEnterSlot()
     {
         Rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+        Rigidbody.rotation = 0;
         //Collider.enabled = false;
         DropAnimation();
     }

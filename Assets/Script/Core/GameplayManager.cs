@@ -9,10 +9,9 @@ public class GameplayManager : MonoBehaviour
 
     public static GameplayManager Instance { get; private set; }
 
-    public AudioSource SFXSource;
     
     public ItemPool ItemPool;
-
+    [Header("Asset")]
     public ItemListAsset ItemListAsset;
     public CharacterListAsset CharacterInfoAsset;
 
@@ -22,18 +21,25 @@ public class GameplayManager : MonoBehaviour
 
     private SaveData SaveData;
 
+    [Header("Component")]
+    public AudioSource SFXSource;
+    public TimerUI TimerUI;
+    public PoliceCall PoliceCall;
+    public TalkComputer TalkComputer;
+    public UIManager UIManager;
+
+    [Header("Spawn")]
     public Transform SpawnLocation;
     public float SpawnSpaceX;
-
-    public TimerUI TimerUI;
-
     public float SecondPerDay = 60;
-
     private float currentTime;
 
     private bool IsPlaying;
     private bool IsVisiting;
 
+    private List<CharacterInfo> TodayCustomer = new List<CharacterInfo>();
+    private List<CharacterInfo> YesterDayCustomer = new List<CharacterInfo>();
+    
     private void Awake()
     {
         Instance = this;
@@ -47,6 +53,12 @@ public class GameplayManager : MonoBehaviour
             position.x += i * SpawnSpaceX;
             prototype.UpdatePosition(position);
         }
+
+        PoliceCall.OnInteract = () => UIManager.CallForPolicePopup.Toggle();
+        TalkComputer.OnInteract = () => UIManager.QuationPopup.Toggle();
+        UIManager.CallForPolicePopup.OnCallPolice = OnCallPolice;
+        UIManager.QuationPopup.Action = OnQuation;
+        UIManager.SetTalkText("Nani");
     }
 
     private void Start()
@@ -75,19 +87,48 @@ public class GameplayManager : MonoBehaviour
         IsPlaying = false;
         if (!IsVisiting)
         {
-            ShowEndDayUI();    
+            ShowEndDayUI();
         }
     }
 
-    private void ShowEndDayUI()
+    private void CustomerExit()
+    {
+        IsVisiting = false;
+        if (!IsPlaying)
+        {
+            ShowEndDayUI();
+        }
+    }
+    private void OnCallPolice()
     {
 
+    }
+
+    private void OnQuation(QuationAction obj)
+    {
+
+    }
+
+    [NaughtyAttributes.Button]
+    private void ShowEndDayUI()
+    {
+        UIManager.EndDay(Today);
+    }
+
+    public void PushCustomer(CharacterInfo info)
+    {
+        
     }
 
     private void ResetDay()
     {
         currentTime = SecondPerDay;
         IsPlaying = true;
+    }
+
+    public void MoveItemTo(ItemPrototype prototype, IDropItemable itemable)
+    {
+
     }
 
     private ItemPrototype CreateItem()

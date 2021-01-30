@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EndDayUI : MonoBehaviour
+public class EndDayUI : PanelBehaviour
 {
     public TMP_Text TotalCustomerText;
     public TMP_Text ImposterCaptureText;
@@ -15,6 +16,17 @@ public class EndDayUI : MonoBehaviour
 
     public Button NextDayButton;
 
+    public Action OnNextDay;
+
+    private void Awake()
+    {
+        NextDayButton.onClick.AddListener(NextDayButton_OnClick);
+    }
+
+    private void NextDayButton_OnClick()
+    {
+        OnNextDay();
+    }
 
     public void SetInfomation(DailyScore score)
     {
