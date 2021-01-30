@@ -16,6 +16,11 @@ public class TrashPrototype : MonoBehaviour, IDropItemable, IInteractable
 
     public bool IsEmpty { get; } = true;
 
+    public bool CanDrop(ItemPrototype pickitem)
+    {
+        return true;
+    }
+
     public void ItemEnter(ItemPrototype prototype)
     {
         var slot = TrashSlot.FirstOrDefault(i => i.BindItem == null);

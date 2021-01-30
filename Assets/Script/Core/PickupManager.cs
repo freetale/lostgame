@@ -52,7 +52,10 @@ public class PickupManager : MonoBehaviour
                 }
                 else
                 {
-                    Interacting();
+                    if (!Interacting())
+                    {
+                        GameplayManager.Instance.InspectItem(null);
+                    }
                 }
             }
             else if (pickitem != null)
@@ -101,7 +104,7 @@ public class PickupManager : MonoBehaviour
         }
         else
         {
-            if (!reciver.IsEmpty)
+            if (!reciver.IsEmpty && reciver.CanDrop(pickitem))
             {
                 DropToFloor();
             }
@@ -122,18 +125,20 @@ public class PickupManager : MonoBehaviour
         pickitem = null;
     }
 
-    private void Interacting()
+    private bool Interacting()
     {
         var ray = Camera.ScreenPointToRay(Input.mousePosition);
         var hit = Physics2D.Raycast(ray.origin, ray.direction, 100f, Interact, 0);
         if (!hit.collider)
         {
-            return;
+            return false;
         }
         var reciver = hit.collider.GetComponent<IInteractable>();
         if (reciver != null)
         {
             reciver.OnClick();
+            return true;
         }
+        return false;
     }
 }

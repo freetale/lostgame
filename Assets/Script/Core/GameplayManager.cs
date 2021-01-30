@@ -13,9 +13,31 @@ public class GameplayManager : MonoBehaviour
     
     public ItemPool ItemPool;
 
+    public ItemListAsset ItemListAsset;
+    public CharacterListAsset CharacterInfoAsset;
+
+    public Randomizer Randomizer { get; private set; }
+
+    private SaveData SaveData;
+
     private void Awake()
     {
         Instance = this;
+        Randomizer = new Randomizer();
+        Randomizer.ItemList = ItemListAsset.ItemList;
+
+        for (int i = 0; i < 5; i++)
+        {
+            CreateItem();
+        }
+    }
+
+    private void CreateItem()
+    {
+        var generate = Randomizer.PickOne();
+        var propertyItem = Randomizer.MatchProperty(generate);
+        var prototype = ItemPool.PickOne();
+        prototype.Bind(propertyItem);
     }
 
     public InspectPopup InspectPopup;
@@ -23,10 +45,20 @@ public class GameplayManager : MonoBehaviour
     public void InspectItem(ItemPrototype item)
     {
         Debug.Log("Inspecting" + item);
-        InspectPopup.Bind(item);
-        if (!InspectPopup.IsOpen)
+        if (item != null)
         {
-            InspectPopup.Open();
+            InspectPopup.Bind(item);
+            if (!InspectPopup.IsOpen)
+            {
+                InspectPopup.Open();
+            }
+        }
+        else
+        {
+            if (InspectPopup.IsOpen)
+            {
+                InspectPopup.Close();
+            }
         }
     }
 
@@ -40,8 +72,8 @@ public class GameplayManager : MonoBehaviour
 public struct SaveData
 {
     public List<DailyScore> DailyScores;
-    public List<GeneratedItem> ItemInSlot;
-    public List<GeneratedItem> ItemInTrash;
+    public List<ItemInfo> ItemInSlot;
+    public List<ItemInfo> ItemInTrash;
     public int Today;
 }
 

@@ -4,20 +4,20 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class ItemRandomizer
+public class Randomizer
 {
     public ItemList ItemList;
 
-    public GeneratedItem PickOne()
+    public ItemInfo PickOne()
     {
         var possibleItem = ItemList.Items.Select(i => i);
         var item = possibleItem.PickRandom();
         return CreateItem(item);
     }
 
-    private GeneratedItem CreateItem(Item item)
+    private ItemInfo CreateItem(Item item)
     {
-        GeneratedItem generated = new GeneratedItem();
+        ItemInfo generated = new ItemInfo();
         generated.Name = item.Name;
         generated.Guid = Guid.NewGuid();
         for (int i = 0; i < item.ItemProperties.Length; i++)
@@ -30,7 +30,7 @@ public class ItemRandomizer
         return generated;
     }
 
-    public PropertyItem MatchPrototype(GeneratedItem generated)
+    public PropertyItem MatchProperty(ItemInfo generated)
     {
         var item = ItemList.Items.First(i => i.Name == generated.Name);
         PropertyItem property = new PropertyItem();
@@ -39,5 +39,14 @@ public class ItemRandomizer
         string propertyAppearance = generated.Property[item.AppearancesKey];
         property.Appearance = item.ItemAppearances.First(i => i.Value == propertyAppearance).Sprite;
         return property;
+    }
+
+    public CharacterInfo RandomCharacter(CharacterListAsset character)
+    {
+        CharacterInfo info = new CharacterInfo();
+        info.HairIndex = UnityEngine.Random.Range(0, character.Hair.Length);
+        info.HeadIndex = UnityEngine.Random.Range(0, character.Head.Length);
+        info.BodyIndex = UnityEngine.Random.Range(0, character.Body.Length);
+        return info;
     }
 }

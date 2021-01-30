@@ -8,18 +8,18 @@ public class TestRandomItem : MonoBehaviour
 {
     public ItemListAsset ItemListAsset;
 
-    public ItemRandomizer ItemRandomizer;
+    public Randomizer ItemRandomizer;
 
     [Button]
     public void TestRandomOne()
     {
-        ItemRandomizer = new ItemRandomizer();
+        ItemRandomizer = new Randomizer();
         ItemRandomizer.ItemList = ItemListAsset.ItemList;
         var item = ItemRandomizer.PickOne();
         Debug.Log(GetItemName(item));
     }
 
-    private string GetItemName(GeneratedItem item)
+    private string GetItemName(ItemInfo item)
     {
         StringBuilder sb = new StringBuilder();
         sb.Append("Name: ");

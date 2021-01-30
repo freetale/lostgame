@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu()]
-public class CharacterInfoAsset : ScriptableObject
+public class CharacterListAsset : ScriptableObject
 {
     public Sprite[] Head;
     public Sprite[] Body;
@@ -21,5 +21,5 @@ public class CharacterInfo
     public bool IsRelaytive;
     public bool IsImposter;
 
-    public GeneratedItem LookingForItem;
+    public ItemInfo LookingForItem;
 }

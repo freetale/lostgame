@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,5 +24,11 @@ public class ItemPool : MonoBehaviour
         var item = Instantiate(Prototype).GetComponent<ItemPrototype>();
         Objects.Add(item);
         return item;
+    }
+
+    internal void Return(ItemPrototype bindItem)
+    {
+        bindItem.SetParent(null);
+        bindItem.gameObject.SetActive(false);
     }
 }

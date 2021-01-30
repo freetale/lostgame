@@ -1680,6 +1680,7 @@ MonoBehaviour:
   - {fileID: 1575138595}
   - {fileID: 1630070807}
   - {fileID: 1590208977}
+  BindItem: {fileID: 0}
 --- !u!4 &1198828196
 Transform:
   m_ObjectHideFlags: 0
@@ -1741,7 +1742,7 @@ MonoBehaviour:
     m_Bits: 512
   pickitem: {fileID: 0}
   Camera: {fileID: 519420031}
-  ClickTrashold: 0.3
+  ClickTrashold: 0.1
 --- !u!114 &1224164490
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1755,8 +1756,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SFXSource: {fileID: 1361157929}
-  ItemPool: {fileID: 0}
-  InspectPopup: {fileID: 0}
+  ItemPool: {fileID: 1224164492}
+  ItemListAsset: {fileID: 11400000, guid: a648f54463cf00a4298cc529c3dc43ab, type: 2}
+  CharacterInfoAsset: {fileID: 11400000, guid: d37e428134c47ff4e9021cc67fae5b21, type: 2}
+  InspectPopup: {fileID: 1198828195}
 --- !u!4 &1224164491
 Transform:
   m_ObjectHideFlags: 0

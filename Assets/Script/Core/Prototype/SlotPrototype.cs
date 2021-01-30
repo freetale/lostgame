@@ -12,6 +12,16 @@ public class SlotPrototype : MonoBehaviour, IDropItemable
 
     public bool IsTrash;
 
+    public System.Predicate<ItemPrototype> PreDropCheck;
+
+    public bool CanDrop(ItemPrototype prototype)
+    {
+        if (PreDropCheck != null)
+        {
+            return PreDropCheck(prototype);
+        }
+        return true;
+    }
     public void ItemEnter(ItemPrototype prototype)
     {
         BindItem = prototype;
@@ -28,4 +38,5 @@ public class SlotPrototype : MonoBehaviour, IDropItemable
         BindItem = null;
         prototype.SetParent(null);
     }
+
 }

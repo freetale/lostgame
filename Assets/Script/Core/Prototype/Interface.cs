@@ -8,6 +8,7 @@ public interface IDropItemable
 
     void ItemEnter(ItemPrototype prototype);
     void ItemLeave(ItemPrototype prototype);
+    bool CanDrop(ItemPrototype pickitem);
 }
 public interface IDropItem
 {
