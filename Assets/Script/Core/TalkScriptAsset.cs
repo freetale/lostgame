@@ -10,14 +10,34 @@ public class TalkScriptAsset
     public string InComing = "Hello I’m {1} Have you found my {0}";
 
     /// <summary>
-    /// 0 for item name and property, 1 for sub item name
+    /// 0 for room number
     /// </summary>
-    public string DescriptItem = "It was {0} with my {1}";
+    public string WhichRoom = "I lost them at room {0}";
+
+    /// <summary>
+    /// 0 for time
+    /// </summary>
+    public string WhenDidLostIt = "At {0}";
+
+    /// <summary>
+    /// 0 is location
+    /// </summary>
+    public string Where = "Around {0}";
+
+    /// <summary>
+    /// 0 for item and property
+    /// </summary>
+    public string WhatItemSingle = " It was {0}";
+
+    /// <summary>
+    /// 0 for item and property, 1 for random sub item
+    /// </summary>
+    public string WhatItemMultiple = " It was {0}, It has {1} inside";
 
     /// <summary>
     /// lost date
     /// </summary>
-    public string DateToday = "At moring";
+    public string DateToday = "Today";
 
     /// <summary>
     /// lost date
@@ -30,15 +50,16 @@ public class TalkScriptAsset
     public string DontKnow = "I don’t know my {0} told me to get it";
 
     /// <summary>
-    /// this one?
+    /// Here you are
     /// </summary>
-    public string CurrentItem = "Current item";
+    public string Thanks = "Thanks";
 
     /// <summary>
-    /// this one?
+    /// Here you are
     /// </summary>
-    public string WrongItem = "No, not this one";
-    public string ComeBackTomorrow = "I'll be back tomorrow";
+    public string WrongItem = "No not this one";
+
+    public string ComeBackTomorrow = "Please find it";
 
     public string PoliceArrsting = "This taste… Is the taste of LIAR";
 
@@ -47,6 +68,6 @@ public class TalkScriptAsset
     public string WrongArrest2Police = "I don’t care";
     public string WrongArrest3 = "NOOOOOOOO";
 
-    public string BossNotify = "That’s was innocent customer -1 for your performance";
-    public string BossThiftNotify = "That’s person a thief -1 for your performance";
+    public string BossInnocentNotify = "That’s was innocent customer\n-1 for your performance";
+    public string BossThiftNotify = "That’s person a thief\n-1 for your performance";
 }

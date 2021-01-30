@@ -32,4 +32,10 @@ public class TalkPopup : PanelBehaviour
         await UniTask.WaitUntil(() => CloseTime < Time.time);
         Close();
     }
+
+    public override UniTask CloseAsync()
+    {
+        CloseTime = Time.time - 1;
+        return base.CloseAsync();
+    }
 }

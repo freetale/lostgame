@@ -22,7 +22,7 @@ public class PanelBehaviour : MonoBehaviour
         }
     }
 
-    public void Open()
+    public virtual void Open()
     {
         OpenAsync().Forget();
     }
@@ -34,7 +34,7 @@ public class PanelBehaviour : MonoBehaviour
         await transform.DOScale(1, AnimationTime).SetEase(Ease.OutBack);
     }
 
-    public void Close()
+    public virtual void Close()
     {
         CloseAsync().Forget();
     }

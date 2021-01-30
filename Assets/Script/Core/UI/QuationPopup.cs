@@ -6,10 +6,11 @@ using UnityEngine.UI;
 
 public enum QuationAction
 {
-    WhatYourRoom,
+    WhichRoom,
     LostDate,
     LastSeen,
     WhatLostItem,
+    [Obsolete]
     ThisOne,
     HereYouAre,
     CameBackTomorrow,
@@ -40,12 +41,12 @@ public class QuationPopup : PanelBehaviour
 
     private void WhatYouRoom_OnClick()
     {
-        Action(QuationAction.WhatYourRoom);
+        Action(QuationAction.WhichRoom);
     }
 
     private void LostDate_OnClick()
     {
-        Action(QuationAction.WhatYourRoom);
+        Action(QuationAction.LostDate);
     }
 
     private void LastSeen_OnClick()

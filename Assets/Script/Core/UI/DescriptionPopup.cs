@@ -24,5 +24,6 @@ public class DescriptionPopup : PanelBehaviour
             }
             sb.AppendFormat("{0}, {1}", item.Key, item.Value);
         }
+        Text.text = sb.ToString();
     }
 }

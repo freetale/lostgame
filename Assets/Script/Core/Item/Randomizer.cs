@@ -72,24 +72,26 @@ public class Randomizer
         return info;
     }
 
-    private TodayRandom GetTodayRandom(int itemcount)
+    private TodayRandom GetTodayRandom(int date, int itemcount)
     {
-        List<ItemInfo> item = new List<ItemInfo>();
+        List<ItemInfo> items = new List<ItemInfo>();
         for (int i = 0; i < itemcount; i++)
         {
-            item.Add(RandomItem());
+            ItemInfo item = RandomItem();
+            item.Date = date;
+            items.Add(item);
         }
         List<CharacterInfo> characters = new List<CharacterInfo>();
         for (int i = 0; i < itemcount; i++)
         {
             var character = RandomCharacter();
-            character.LookingForItem = item[i].Clone();
+            character.LookingForItem = items[i].Clone();
             characters.Add(character);
         }
         var today = new TodayRandom()
         {
             Characters = characters.ToArray(),
-            ItemInfo = item.ToArray(),
+            ItemInfo = items.ToArray(),
         };
         return today;
     }
@@ -100,7 +102,7 @@ public class Randomizer
         session.Days = new TodayRandom[7];
         for (int i = 0; i < 7; i++)
         {
-            session.Days[i] = GetTodayRandom(7);
+            session.Days[i] = GetTodayRandom(i, 7);
         }
         return session;
     }

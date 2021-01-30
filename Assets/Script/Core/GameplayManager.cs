@@ -36,18 +36,23 @@ public class GameplayManager : MonoBehaviour
     public float DialogueInterval = 3f;
     private float currentTime;
 
-    private bool IsPlaying;
+    private bool IsOpenTime;
     private bool IsVisiting;
 
     [NonSerialized]
     private List<CharacterInfo> TodayCustomer = new List<CharacterInfo>();
     [NonSerialized]
     private List<CharacterInfo> YesterDayCustomer = new List<CharacterInfo>();
-    [NaughtyAttributes.ShowNonSerializedField]
+    [NonSerialized]
+    private List<CharacterInfo> WaitingCustomer = new List<CharacterInfo>();
+
+    [NonSerialized]
     private List<ItemPrototype> StandAloneItem = new List<ItemPrototype>();
     [NonSerialized]
     private CharacterInfo CurrentCustomer;
 
+    [NaughtyAttributes.ShowNativeProperty]
+    public int StandAloneCount => StandAloneItem.Count;
 
     [NaughtyAttributes.ShowNonSerializedField]
     private int CurrentDayIndex = 0;
@@ -60,7 +65,7 @@ public class GameplayManager : MonoBehaviour
         Randomizer = new Randomizer();
         Randomizer.ItemList = ItemListAsset.ItemList;
         Randomizer.CharacterListAsset = CharacterListAsset;
-        
+
 
         PoliceCall.OnInteract = () => UIManager.CallForPolicePopup.Toggle();
         TalkComputer.OnInteract = () => UIManager.QuationPopup.Toggle();
@@ -98,7 +103,7 @@ public class GameplayManager : MonoBehaviour
     private void OnDayEnd()
     {
         Debug.Log("DayEnd");
-        IsPlaying = false;
+        IsOpenTime = false;
         if (!IsVisiting)
         {
             ShowEndDayUI();
@@ -111,7 +116,7 @@ public class GameplayManager : MonoBehaviour
         var todayRandom = SessionRandom.Days[index];
         TodayCustomer.AddRange(todayRandom.Characters);
         ItemSpawner.Spawn(todayRandom.ItemInfo);
-        
+
     }
 
     private void CustomerComing()
@@ -152,7 +157,7 @@ public class GameplayManager : MonoBehaviour
     {
         CurrentCustomer = null;
         IsVisiting = false;
-        if (!IsPlaying)
+        if (!IsOpenTime)
         {
             ShowEndDayUI();
         }
@@ -196,7 +201,97 @@ public class GameplayManager : MonoBehaviour
     {
         if (CurrentCustomer == null)
             return;
+        var looking = CurrentCustomer.LookingForItem;
+        var today = looking.Date == CurrentDayIndex;
+        var text = GetQuation(quation, looking, today, CurrentCustomer.IsImposter);
+        UIManager.SetTalkText(text);
+        if (quation == QuationAction.CameBackTomorrow)
+        {
+            CustommerComeTomorrow().Forget();
+        }
+    }
 
+    private string GetQuation(QuationAction quation, ItemInfo looking, bool yesterday, bool isImposter)
+    {
+        switch (quation)
+        {
+            case QuationAction.WhichRoom:
+                return string.Format(TalkScriptAsset.WhichRoom, looking.Room);
+            case QuationAction.LostDate:
+                if (yesterday) return TalkScriptAsset.DateYesterday;
+                else return TalkScriptAsset.DateToday;
+            case QuationAction.LastSeen:
+                return string.Format(TalkScriptAsset.Where, looking.Location);
+            case QuationAction.WhatLostItem:
+                if (looking.SubItem.Count > 0)
+                {
+                    ItemInfo sub = looking.SubItem.PickRandom();
+                    return string.Format(TalkScriptAsset.WhatItemMultiple, looking.GetDescriptionString(), sub.GetDescriptionString());
+                }
+                else
+                {
+                    return string.Format(TalkScriptAsset.WhatItemSingle, looking.GetDescriptionString());
+                }
+            case QuationAction.HereYouAre:
+                if (StandAloneItem.Count != 1)
+                {
+                    Debug.LogWarning("No avaliable item");
+                    return "";
+                }
+                if (isImposter)
+                {
+                    ImposterTakeAway().Forget();
+                    return string.Format(TalkScriptAsset.Thanks);
+                }
+                var guid = StandAloneItem[0].ItemInfo.Guid;
+                if (looking.Guid == guid)
+                {
+                    CustomerTakeAway().Forget();
+                    return string.Format(TalkScriptAsset.Thanks);
+                }
+                else return string.Format(TalkScriptAsset.WrongItem);
+            case QuationAction.CameBackTomorrow:
+                return string.Format(TalkScriptAsset.ComeBackTomorrow);
+            default:
+                return "";
+        }
+    }
+
+    private async UniTask CustommerComeTomorrow()
+    {
+        WaitingCustomer.Add(CurrentCustomer);
+        CurrentCustomer = null;
+        await UniTask.Delay(TimeSpan.FromSeconds(DialogueInterval));
+        await CharacterControlGroup.Play(CharacterAnimation.MoveOut);
+        CustomerExit();
+    }
+
+    private async UniTask CustomerTakeAway()
+    {
+        CurrentCustomer = null;
+        ReturnOneItemToPool();
+        await CharacterControlGroup.Play(CharacterAnimation.MoveOut);
+        CustomerExit();
+    }
+
+    private async UniTask ImposterTakeAway()
+    {
+        CurrentCustomer = null;
+        ReturnOneItemToPool();
+        await CharacterControlGroup.Play(CharacterAnimation.MoveOut);
+        await UIManager.ShowBossMessage(TalkScriptAsset.BossThiftNotify);
+        CustomerExit();
+    }
+
+    private void ReturnOneItemToPool()
+    {
+        if (StandAloneItem.Count != 1)
+        {
+            throw new ArgumentException("No avaliable item");
+        }
+        var item = StandAloneItem[0];
+        StandAloneItem.RemoveAt(0);
+        ItemPool.Return(item);
     }
 
     private void ShowEndDayUI()
@@ -204,20 +299,10 @@ public class GameplayManager : MonoBehaviour
         UIManager.EndDay(Today);
     }
 
-    public void PushCustomer(CharacterInfo info)
-    {
-        
-    }
-
     private void ResetDay()
     {
         currentTime = SecondPerDay;
-        IsPlaying = true;
-    }
-
-    public void MoveItemTo(ItemPrototype prototype, IDropItemable itemable)
-    {
-
+        IsOpenTime = true;
     }
 
     private void OnPickUp(ItemPrototype item)
@@ -229,8 +314,8 @@ public class GameplayManager : MonoBehaviour
             item.AttachTo = null;
         }
         item.OnPick();
-        StandAloneItem.Add(item);
-        InspectItem(null);
+        if (!StandAloneItem.Contains(item))
+            StandAloneItem.Add(item);
     }
 
     private void OnDropDown(ItemPrototype item, IDropItemable reciver)
@@ -254,7 +339,7 @@ public class GameplayManager : MonoBehaviour
     {
         if (item != null)
         {
-            Debug.Log("Inspecting" + item);
+            Debug.Log("Inspecting" + item.ItemInfo.GetDescriptionString());
             UIManager.OpenDescription(item.ItemInfo);
             InspectPopup.Bind(item);
             if (!InspectPopup.IsOpen)
@@ -266,6 +351,7 @@ public class GameplayManager : MonoBehaviour
         {
             if (InspectPopup.IsOpen)
             {
+                UIManager.CloseDescription();
                 InspectPopup.Close();
             }
         }

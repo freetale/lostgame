@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using UnityEngine;
 
 [Serializable]
@@ -10,6 +12,7 @@ public class ItemInfo
     public string Name;
     public string Room;
     public string Location;
+    public int Date;
     public Dictionary<string, string> Property = new Dictionary<string, string>();
 
     /// <summary>
@@ -17,7 +20,7 @@ public class ItemInfo
     /// </summary>
     public bool WasTrash;
 
-    public List<ItemInfo> ItemInfos = new List<ItemInfo>();
+    public List<ItemInfo> SubItem { get; } = new List<ItemInfo>();
 
     public ItemInfo CloneWithNewID()
     {
@@ -33,10 +36,24 @@ public class ItemInfo
             Guid = Guid,
             Name = Name,
             Room = Room,
+            Date = Date,
             Location = Location,
             Property = new Dictionary<string, string>(Property),
         };
+        info.SubItem.AddRange(SubItem.Select(i => i.Clone()));
         return info;
+    }
+
+    public string GetDescriptionString()
+    {
+        StringBuilder sb = new StringBuilder();
+        foreach (var item in Property)
+        {
+            sb.Append(item.Value);
+            sb.Append(" ");
+        }
+        sb.Append(Name);
+        return sb.ToString();
     }
 }
 

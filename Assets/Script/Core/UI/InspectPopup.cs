@@ -51,7 +51,7 @@ public class InspectPopup : PanelBehaviour
         if (item != null)
         {
             var generate = item.Property.GeneratedItem;
-            foreach (var subItem in generate.ItemInfos)
+            foreach (var subItem in generate.SubItem)
             {
                 var prototype = ItemPool.PickOne();
                 prototype.Bind(subItem);

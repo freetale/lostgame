@@ -27,6 +27,7 @@ public class ItemPrototype : MonoBehaviour
         {
             throw new ArgumentNullException(nameof(itemInfo));
         }
+        ItemInfo = itemInfo;
         var property = GameplayManager.Instance.Randomizer.MatchProperty(itemInfo);
         Property = property;
         if (Property != null)

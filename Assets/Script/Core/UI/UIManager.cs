@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
@@ -11,6 +12,7 @@ public class UIManager : MonoBehaviour
     public QuationPopup QuationPopup;
     public TalkPopup TalkPopup;
     public TalkPopup PolicePopup;
+    public TalkPopup BossPopup;
     public DescriptionPopup DescriptionPopup;
 
     public Action OnNextDay;
@@ -53,5 +55,20 @@ public class UIManager : MonoBehaviour
         PolicePopup.Close();
         TalkPopup.Close();
         DescriptionPopup.Close();
+        CallForPolicePopup.Close();
+        QuationPopup.Close();
+    }
+
+    public async UniTask ShowBossMessage(string bossThiftNotify)
+    {
+        BossPopup.SetText(bossThiftNotify);
+        BossPopup.WaitAndClose();
+
+        await UniTask.WaitUntil(() => !BossPopup.IsOpen);
+    }
+
+    public void SetQuationSubmitItem(bool canSubmit)
+    {
+        QuationPopup.SetSubmitItem(canSubmit);
     }
 }
