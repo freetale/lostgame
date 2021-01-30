@@ -20,7 +20,11 @@ public class TalkPopup : PanelBehaviour
     public void WaitAndClose()
     {
         CloseTime = CloseDelay + Time.time;
-        WaitAndCloseAsync();
+        if (!IsOpen)
+        {
+            Open();
+            WaitAndCloseAsync();
+        }
     }
 
     private async void WaitAndCloseAsync()

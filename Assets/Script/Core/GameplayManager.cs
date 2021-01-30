@@ -9,7 +9,6 @@ public class GameplayManager : MonoBehaviour
 
     public static GameplayManager Instance { get; private set; }
 
-    
     public ItemPool ItemPool;
     [Header("Asset")]
     public ItemListAsset ItemListAsset;
@@ -22,11 +21,13 @@ public class GameplayManager : MonoBehaviour
     private SaveData SaveData;
 
     [Header("Component")]
+    public PickupManager PickupManager;
     public AudioSource SFXSource;
     public TimerUI TimerUI;
     public PoliceCall PoliceCall;
     public TalkComputer TalkComputer;
     public UIManager UIManager;
+    public InspectPopup InspectPopup;
 
     [Header("Spawn")]
     public Transform SpawnLocation;
@@ -37,9 +38,13 @@ public class GameplayManager : MonoBehaviour
     private bool IsPlaying;
     private bool IsVisiting;
 
+    [NonSerialized]
     private List<CharacterInfo> TodayCustomer = new List<CharacterInfo>();
+    [NonSerialized]
     private List<CharacterInfo> YesterDayCustomer = new List<CharacterInfo>();
-    
+    [NonSerialized]
+    private List<ItemPrototype> StandAloneItem = new List<ItemPrototype>();
+
     private void Awake()
     {
         Instance = this;
@@ -58,12 +63,14 @@ public class GameplayManager : MonoBehaviour
         TalkComputer.OnInteract = () => UIManager.QuationPopup.Toggle();
         UIManager.CallForPolicePopup.OnCallPolice = OnCallPolice;
         UIManager.QuationPopup.Action = OnQuation;
-        UIManager.SetTalkText("Nani");
+        PickupManager.OnPickup = OnPickUp;
+        PickupManager.OnDropdown = OnDropDown;
     }
 
     private void Start()
     {
         ResetDay();
+        UIManager.SetTalkText("Nani");
     }
 
     private void Update()
@@ -140,7 +147,35 @@ public class GameplayManager : MonoBehaviour
         return prototype;
     }
 
-    public InspectPopup InspectPopup;
+    private void OnPickUp(ItemPrototype item)
+    {
+        if (item.AttachTo != null)
+        {
+            item.AttachTo.ItemLeave(item);
+            item.OnLeaveSlot();
+            item.AttachTo = null;
+        }
+        item.OnPick();
+        StandAloneItem.Add(item);
+        InspectItem(null);
+    }
+
+    private void OnDropDown(ItemPrototype item, IDropItemable reciver)
+    {
+        if (reciver != null && reciver.IsEmpty && reciver.CanDrop(item))
+        {
+            StandAloneItem.Remove(item);
+            item.AttachTo = reciver;
+            item.OnDrop();
+            item.OnEnterSlot();
+            reciver.ItemEnter(item);
+        }
+        else
+        {
+            item.OnDrop();
+        }
+    }
+
 
     public void InspectItem(ItemPrototype item)
     {

@@ -11,6 +11,7 @@ public class SlotPrototype : MonoBehaviour, IDropItemable
     public bool IsEmpty => BindItem == null;
 
     public bool IsTrash;
+    public bool isSubItem;
 
     public System.Predicate<ItemPrototype> PreDropCheck;
 

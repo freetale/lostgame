@@ -8,6 +8,8 @@ public class ItemInfo
 {
     public Guid Guid;
     public string Name;
+    public string Room;
+    public string Location;
     public Dictionary<string, string> Property = new Dictionary<string, string>();
 
     /// <summary>
@@ -16,6 +18,7 @@ public class ItemInfo
     public bool WasTrash;
 
     public List<ItemInfo> ItemInfos = new List<ItemInfo>();
+
 }
 
 public class PropertyItem
@@ -24,4 +27,7 @@ public class PropertyItem
 
     public GameObject Prototype;
     public Sprite Appearance;
+
+    public string Room;
+    public string Location;
 }

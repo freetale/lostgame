@@ -19,6 +19,9 @@ public class PickupManager : MonoBehaviour
 
     private float keyDownTime;
 
+    public Action<ItemPrototype> OnPickup;
+    public Action<ItemPrototype, IDropItemable> OnDropdown;
+
     private void Start()
     {
         if (!Camera)
@@ -76,13 +79,8 @@ public class PickupManager : MonoBehaviour
         var item = hit.collider.GetComponent<ItemPrototype>();
         if (item != null)
         {
-            if (item.AttachTo != null)
-            {
-                item.AttachTo.ItemLeave(item);
-                item.OnLeaveSlot();
-                item.AttachTo = null;
-            }
-            item.OnPick();
+            OnPickup(item);
+            
             pickitem = item;
         }
     }
@@ -93,35 +91,12 @@ public class PickupManager : MonoBehaviour
         var hit = Physics2D.Raycast(ray.origin, ray.direction, 100f, Interact, 0);
         if (!hit.collider)
         {
-            DropToFloor();
+            OnDropdown(pickitem, null);
+            pickitem = null;
             return;
         }
         var reciver = hit.collider.GetComponent<IDropItemable>();
-        if (reciver == null)
-        {
-            DropToFloor();
-            return;
-        }
-        else
-        {
-            if (reciver.IsEmpty && reciver.CanDrop(pickitem))
-            {
-                pickitem.AttachTo = reciver;
-                pickitem.OnDrop();
-                pickitem.OnEnterSlot();
-                reciver.ItemEnter(pickitem);
-                pickitem = null;
-            }
-            else
-            {
-                DropToFloor();
-            }
-        }
-    }
-
-    private void DropToFloor()
-    {
-        pickitem.OnDrop();
+        OnDropdown(pickitem, reciver);
         pickitem = null;
     }
 

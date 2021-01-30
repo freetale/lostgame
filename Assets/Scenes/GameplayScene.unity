@@ -4415,15 +4415,16 @@ MonoBehaviour:
   ItemListAsset: {fileID: 11400000, guid: a648f54463cf00a4298cc529c3dc43ab, type: 2}
   CharacterInfoAsset: {fileID: 11400000, guid: 41de2d363b3641d4783649cadd95be05, type: 2}
   CharacterControlGroup: {fileID: 164716437}
+  PickupManager: {fileID: 1224164489}
   SFXSource: {fileID: 1361157929}
   TimerUI: {fileID: 1013071307}
   PoliceCall: {fileID: 1025324594}
   TalkComputer: {fileID: 1565512427}
   UIManager: {fileID: 1984779927}
+  InspectPopup: {fileID: 1198828195}
   SpawnLocation: {fileID: 1081138755}
   SpawnSpaceX: -0.1
   SecondPerDay: 60
-  InspectPopup: {fileID: 1198828195}
 --- !u!4 &1224164491
 Transform:
   m_ObjectHideFlags: 0
@@ -7508,7 +7509,7 @@ MonoBehaviour:
   EndDayUI: {fileID: 957347551}
   CallForPolicePopup: {fileID: 159370299}
   QuationPopup: {fileID: 1636590780}
-  TalkPopup: {fileID: 0}
+  TalkPopup: {fileID: 264634896}
 --- !u!1001 &1993373438
 PrefabInstance:
   m_ObjectHideFlags: 0

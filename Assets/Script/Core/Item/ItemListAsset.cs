@@ -17,6 +17,12 @@ public class ItemList
 {
     [BoxGroup]
     public Item[] Items;
+
+    public string[] Room;
+    public string[] InvalidRoom;
+
+    public string[] Location;
+    public string[] InvalidLocation;
 }
 
 [Serializable]

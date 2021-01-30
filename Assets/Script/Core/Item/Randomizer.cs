@@ -12,14 +12,17 @@ public class Randomizer
     {
         var possibleItem = ItemList.Items.Select(i => i);
         var item = possibleItem.PickRandom();
-        return CreateItem(item);
+        return CreateItem(item, ItemList.Room, ItemList.Location);
     }
 
-    private ItemInfo CreateItem(Item item)
+    private ItemInfo CreateItem(Item item, IEnumerable<string> room, IEnumerable<string> location)
     {
         ItemInfo generated = new ItemInfo();
         generated.Name = item.Name;
         generated.Guid = Guid.NewGuid();
+        generated.Room = room.PickRandom();
+        generated.Location = location.PickRandom();
+
         for (int i = 0; i < item.ItemProperties.Length; i++)
         {
             string key = item.ItemProperties[i].Key;

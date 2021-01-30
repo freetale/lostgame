@@ -8,7 +8,7 @@ public class PanelBehaviour : MonoBehaviour
 {
     public bool IsOpen { get; private set; }
 
-    public float AnimationTime { get; } = 0.3f;
+    public float AnimationTime { get; } = 0.2f;
 
     public void Toggle()
     {
