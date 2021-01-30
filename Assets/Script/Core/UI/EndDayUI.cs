@@ -24,7 +24,7 @@ public class EndDayUI : MonoBehaviour
         InnocentCapture.text = score.InnocentGetAways.ToString();
         CustomerStilMissing.text = score.CustomerStilMissing.ToString();
         var satisfaction = (int)((float)score.Satisfaction / score.MaxSatisfaction * 100);
-        Satisfaction.text = satisfaction.ToString();
+        Satisfaction.text = satisfaction.ToString() + "%";
     }
 
 }

@@ -16,6 +16,8 @@ public class GameplayManager : MonoBehaviour
     public ItemListAsset ItemListAsset;
     public CharacterListAsset CharacterInfoAsset;
 
+    public CharacterControlGroup CharacterControlGroup;
+
     public Randomizer Randomizer { get; private set; }
 
     private SaveData SaveData;
