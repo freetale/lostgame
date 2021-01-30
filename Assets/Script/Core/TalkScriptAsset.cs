@@ -5,9 +5,9 @@ using UnityEngine;
 public class TalkScriptAsset
 {
     /// <summary>
-    /// 0 for item name
+    /// {0} for item name, {1] name
     /// </summary>
-    public string InComing = "Help my {0} gone missing";
+    public string InComing = "Hello I’m {1} Have you found my {0}";
 
     /// <summary>
     /// 0 for item name and property, 1 for sub item name

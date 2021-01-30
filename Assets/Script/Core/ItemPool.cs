@@ -20,6 +20,11 @@ public class ItemPool : MonoBehaviour
         return item;
     }
 
+    public void Bind(ItemInfo itemInfo)
+    {
+        
+    }
+
     private ItemPrototype InstanceOne()
     {
         var item = Instantiate(Prototype).GetComponent<ItemPrototype>();

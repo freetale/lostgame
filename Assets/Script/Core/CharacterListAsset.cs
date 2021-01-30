@@ -11,6 +11,8 @@ public class CharacterListAsset : ScriptableObject
     public Sprite[] Hair;
 
     public string[] Relaytion;
+    public string[] Name;
+    public string[] LastName;
 }
 
 [Serializable]
@@ -23,6 +25,10 @@ public class CharacterInfo
     public bool IsRelaytive;
     public bool IsImposter;
 
-    public string Relaytion;
+    public string Relation;
     public ItemInfo LookingForItem;
+
+    public Guid guid;
+    public string Name;
+    public int Satisfaction = 10;
 }

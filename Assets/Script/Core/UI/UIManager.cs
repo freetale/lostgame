@@ -10,6 +10,8 @@ public class UIManager : MonoBehaviour
     public CallForPolicePopup CallForPolicePopup;
     public QuationPopup QuationPopup;
     public TalkPopup TalkPopup;
+    public TalkPopup PolicePopup;
+    public DescriptionPopup DescriptionPopup;
 
     public Action OnNextDay;
 
@@ -24,9 +26,25 @@ public class UIManager : MonoBehaviour
         TalkPopup.WaitAndClose();
     }
 
+    public void SetPoliceText(string v)
+    {
+        PolicePopup.SetText(v);
+        PolicePopup.WaitAndClose();
+    }
+
     internal void EndDay(DailyScore score)
     {
         EndDayUI.SetInfomation(score);
         EndDayUI.Open();
+    }
+
+    public void OpenDescription(ItemInfo item)
+    {
+        DescriptionPopup.SetItem(item);
+        DescriptionPopup.Open();
+    }
+    public void CloseDescription()
+    {
+        DescriptionPopup.Close();
     }
 }

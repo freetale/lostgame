@@ -13,7 +13,7 @@ public class GameplayManager : MonoBehaviour
     public ItemPool ItemPool;
     [Header("Asset")]
     public ItemListAsset ItemListAsset;
-    public CharacterListAsset CharacterInfoAsset;
+    public CharacterListAsset CharacterListAsset;
 
     public CharacterControlGroup CharacterControlGroup;
 
@@ -29,10 +29,8 @@ public class GameplayManager : MonoBehaviour
     public TalkComputer TalkComputer;
     public UIManager UIManager;
     public InspectPopup InspectPopup;
+    public ItemSpawner ItemSpawner;
 
-    [Header("Spawn")]
-    public Transform SpawnLocation;
-    public float SpawnSpaceX;
     public float SecondPerDay = 60;
     private float currentTime;
 
@@ -50,19 +48,18 @@ public class GameplayManager : MonoBehaviour
 
     public TalkScriptAsset TalkScriptAsset;
 
+    [NaughtyAttributes.ShowNonSerializedField]
+    private int CurrentDayIndex = 0;
+
+    private SessionRandom SessionRandom;
+
     private void Awake()
     {
         Instance = this;
         Randomizer = new Randomizer();
         Randomizer.ItemList = ItemListAsset.ItemList;
-
-        for (int i = 0; i < 5; i++)
-        {
-            var prototype = CreateItem();
-            var position = SpawnLocation.position;
-            position.x += i * SpawnSpaceX;
-            prototype.UpdatePosition(position);
-        }
+        Randomizer.CharacterListAsset = CharacterListAsset;
+        
 
         PoliceCall.OnInteract = () => UIManager.CallForPolicePopup.Toggle();
         TalkComputer.OnInteract = () => UIManager.QuationPopup.Toggle();
@@ -76,6 +73,8 @@ public class GameplayManager : MonoBehaviour
     private void Start()
     {
         ResetDay();
+        SessionRandom = Randomizer.GetSessionRandom();
+        UpdateDay(0);
         CustomerComing();
     }
 
@@ -104,6 +103,13 @@ public class GameplayManager : MonoBehaviour
         }
     }
 
+    private void UpdateDay(int index)
+    {
+        CurrentDayIndex = index;
+        var todayRandom = SessionRandom.Days[index];
+        TodayCustomer.AddRange(todayRandom.Characters);
+    }
+
     private void CustomerComing()
     {
         if (TodayCustomer.Count == 0)
@@ -114,27 +120,28 @@ public class GameplayManager : MonoBehaviour
             }
             else
             {
-                Summon(YesterDayCustomer[0]).Forget();
+                SummonCustomer(YesterDayCustomer[0]).Forget();
                 YesterDayCustomer.RemoveAt(0);
             }
         }
         else
         {
-            Summon(TodayCustomer[0]).Forget();
+            SummonCustomer(TodayCustomer[0]).Forget();
             TodayCustomer.RemoveAt(0);
         }
     }
 
-    private async UniTask Summon(CharacterInfo characterInfo)
+    private async UniTask SummonCustomer(CharacterInfo characterInfo)
     {
         CurrentCustomer = characterInfo;
         CharacterControlGroup.Bind(characterInfo);
         await CharacterControlGroup.Play(CharacterAnimation.MoveIn);
-        UIManager.SetTalkText(string.Format(TalkScriptAsset.InComing, characterInfo.LookingForItem.Name));
+        UIManager.SetTalkText(string.Format(TalkScriptAsset.InComing, characterInfo.LookingForItem.Name, characterInfo.Name));
     }
 
     private void CustomerExit()
     {
+        CurrentCustomer = null;
         IsVisiting = false;
         if (!IsPlaying)
         {
@@ -146,12 +153,13 @@ public class GameplayManager : MonoBehaviour
 
     }
 
-    private void OnQuation(QuationAction obj)
+    private void OnQuation(QuationAction quation)
     {
+        if (CurrentCustomer == null)
+            return;
 
     }
 
-    [NaughtyAttributes.Button]
     private void ShowEndDayUI()
     {
         UIManager.EndDay(Today);
@@ -171,15 +179,6 @@ public class GameplayManager : MonoBehaviour
     public void MoveItemTo(ItemPrototype prototype, IDropItemable itemable)
     {
 
-    }
-
-    private ItemPrototype CreateItem()
-    {
-        var generate = Randomizer.PickOne();
-        var propertyItem = Randomizer.MatchProperty(generate);
-        var prototype = ItemPool.PickOne();
-        prototype.Bind(propertyItem);
-        return prototype;
     }
 
     private void OnPickUp(ItemPrototype item)

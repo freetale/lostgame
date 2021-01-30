@@ -53,9 +53,8 @@ public class InspectPopup : PanelBehaviour
             var generate = item.Property.GeneratedItem;
             foreach (var subItem in generate.ItemInfos)
             {
-                var property = Randomizer.MatchProperty(subItem);
                 var prototype = ItemPool.PickOne();
-                prototype.Bind(property);
+                prototype.Bind(subItem);
             }
         }
     }

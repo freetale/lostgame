@@ -8,7 +8,7 @@ public class DescriptionPopup : PanelBehaviour
 {
     public TMP_Text Text;
 
-    public void SetDescription(ItemInfo info)
+    public void SetItem(ItemInfo info)
     {
         StringBuilder sb = new StringBuilder();
         sb.AppendLine(info.Name);

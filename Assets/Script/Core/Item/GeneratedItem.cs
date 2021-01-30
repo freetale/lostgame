@@ -21,9 +21,16 @@ public class ItemInfo
 
     public ItemInfo CloneWithNewID()
     {
+        var clone = Clone();
+        clone.Guid = Guid.NewGuid();
+        return clone;
+    }
+
+    public ItemInfo Clone()
+    {
         var info = new ItemInfo()
         {
-            Guid = Guid.NewGuid(),
+            Guid = Guid,
             Name = Name,
             Room = Room,
             Location = Location,

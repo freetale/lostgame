@@ -17,12 +17,15 @@ public class ItemPrototype : MonoBehaviour
     
     public IDropItemable AttachTo { get; set; }
 
-    public void Bind(PropertyItem item)
+    public ItemInfo ItemInfo { get; private set; }
+
+    public void Bind(ItemInfo itemInfo)
     {
-        Property = item;
+        var property = GameplayManager.Instance.Randomizer.MatchProperty(ItemInfo);
+        Property = property;
         if (Property != null)
         {
-            SpriteRenderer.sprite = item.Appearance;
+            SpriteRenderer.sprite = property.Appearance;
         }
     }
 

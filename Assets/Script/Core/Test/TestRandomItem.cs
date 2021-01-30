@@ -15,7 +15,7 @@ public class TestRandomItem : MonoBehaviour
     {
         ItemRandomizer = new Randomizer();
         ItemRandomizer.ItemList = ItemListAsset.ItemList;
-        var item = ItemRandomizer.PickOne();
+        var item = ItemRandomizer.RandomItem();
         Debug.Log(GetItemName(item));
     }
 
