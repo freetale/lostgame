@@ -19,8 +19,11 @@ public class DescriptionPopup : PanelBehaviour
         {
             if (firstProp)
             {
-                sb.Append(",");
                 firstProp = false;
+            }
+            else
+            {
+                sb.Append(",");
             }
             sb.AppendFormat("{0}, {1}", item.Key, item.Value);
         }

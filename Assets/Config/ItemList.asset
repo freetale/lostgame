@@ -21,9 +21,13 @@ MonoBehaviour:
       ItemProperties:
       - Key: Brand
         Values:
-        - Alpaca
-        - Bacon
-        - Cinamon
+        - Dizzer
+        - Zenon
+        - D-Queen
+        - Phytheon
+        - Mo-Lon
+        - S/ash
+        - Highper
       - Key: Color
         Values:
         - Black
@@ -45,6 +49,326 @@ MonoBehaviour:
         Sprite: {fileID: 21300000, guid: 028e4deb4aed763489383fd2b015a2f3, type: 3}
       - Value: Yellow
         Sprite: {fileID: 21300000, guid: 6c6bb09498a69294f93b62c9392f5112, type: 3}
+    - Name: Car Key
+      CanBeSubSet: 1
+      CanBeSuperSet: 0
+      Exclusive: 0
+      ItemProperties:
+      - Key: Brand
+        Values:
+        - MEZ
+        - Deez
+        - Zens
+        - Tytan
+        - Olympus
+      - Key: Shape
+        Values:
+        - Circle
+        - Heart
+        - Star
+        - Teddy Bear
+      Prototype: {fileID: 2325164575644152457, guid: 6d55c575858a0a943b578263d929f97e,
+        type: 3}
+      AppearancesKey: Shape
+      ItemAppearances:
+      - Value: Circle
+        Sprite: {fileID: 21300000, guid: ec060dc3482d4074e992a9e914a83b7f, type: 3}
+      - Value: Heart
+        Sprite: {fileID: 21300000, guid: 60ecf6953bc27b74fad63cd09770434a, type: 3}
+      - Value: Star
+        Sprite: {fileID: 21300000, guid: 1e852bf3321c6db49afac83bdbd560aa, type: 3}
+      - Value: Teddy Bear
+        Sprite: {fileID: 21300000, guid: a24e58a635a4eb94a8e3109898ac51ff, type: 3}
+    - Name: Earring
+      CanBeSubSet: 1
+      CanBeSuperSet: 0
+      Exclusive: 0
+      ItemProperties:
+      - Key: Brand
+        Values:
+        - D-Queen
+        - Phytheon
+        - Liu Xo
+      - Key: Jewel
+        Values:
+        - Emerald
+        - Honey Topaz
+        - Ruby
+        - Sapphine
+      Prototype: {fileID: 2325164575644152457, guid: 6d55c575858a0a943b578263d929f97e,
+        type: 3}
+      AppearancesKey: Jewel
+      ItemAppearances:
+      - Value: Emerald
+        Sprite: {fileID: 21300000, guid: 1b2433e6a7cafdc4da2f1055f41660e6, type: 3}
+      - Value: Honey Topaz
+        Sprite: {fileID: 21300000, guid: 351fae2e2963d7f459eb26b280bd0717, type: 3}
+      - Value: Ruby
+        Sprite: {fileID: 21300000, guid: a8a43ac8f4e9e8144b8366c4abbfb793, type: 3}
+      - Value: Sapphine
+        Sprite: {fileID: 21300000, guid: e380e696663b7f24f8780b4d99cc7fdb, type: 3}
+    - Name: Employee Card
+      CanBeSubSet: 1
+      CanBeSuperSet: 0
+      Exclusive: 1
+      ItemProperties:
+      - Key: Name
+        Values:
+        - '#NAME#'
+      Prototype: {fileID: 2325164575644152457, guid: 6d55c575858a0a943b578263d929f97e,
+        type: 3}
+      AppearancesKey: Name
+      ItemAppearances:
+      - Value: '#NAME#'
+        Sprite: {fileID: 21300000, guid: 86813bcad9bc66c41b54668e64dec7d9, type: 3}
+    - Name: ID Card
+      CanBeSubSet: 1
+      CanBeSuperSet: 0
+      Exclusive: 1
+      ItemProperties:
+      - Key: Name
+        Values:
+        - '#NAME#'
+      Prototype: {fileID: 2325164575644152457, guid: 6d55c575858a0a943b578263d929f97e,
+        type: 3}
+      AppearancesKey: Name
+      ItemAppearances:
+      - Value: '#NAME#'
+        Sprite: {fileID: 21300000, guid: b7db6f6c35341f84aa49240e9468162c, type: 3}
+    - Name: Metro Card
+      CanBeSubSet: 1
+      CanBeSuperSet: 0
+      Exclusive: 1
+      ItemProperties:
+      - Key: Type
+        Values:
+        - Premium
+        - Senior
+        - Student
+      Prototype: {fileID: 2325164575644152457, guid: 6d55c575858a0a943b578263d929f97e,
+        type: 3}
+      AppearancesKey: Type
+      ItemAppearances:
+      - Value: Premium
+        Sprite: {fileID: 21300000, guid: ed8d7cac523e7224e9b989cdedf7b98a, type: 3}
+      - Value: Senior
+        Sprite: {fileID: 21300000, guid: 1c44f1ddc5c36d149a8a6241ec185973, type: 3}
+      - Value: Student
+        Sprite: {fileID: 21300000, guid: c3a6c5a7786e8884ea91f2bb7a6aac36, type: 3}
+    - Name: Money
+      CanBeSubSet: 1
+      CanBeSuperSet: 0
+      Exclusive: 1
+      ItemProperties:
+      - Key: Value
+        Values:
+        - 100
+        - 500
+        - 1000
+      Prototype: {fileID: 2325164575644152457, guid: 6d55c575858a0a943b578263d929f97e,
+        type: 3}
+      AppearancesKey: Value
+      ItemAppearances:
+      - Value: 100
+        Sprite: {fileID: 21300000, guid: 81f807a4738d6e04ba284997c06be7ae, type: 3}
+      - Value: 500
+        Sprite: {fileID: 21300000, guid: ca73b784b1e1f3b44ba9a478c59e635b, type: 3}
+      - Value: 1000
+        Sprite: {fileID: 21300000, guid: 31fa599af79417540a443e08572d1206, type: 3}
+    - Name: Necklace
+      CanBeSubSet: 1
+      CanBeSuperSet: 0
+      Exclusive: 0
+      ItemProperties:
+      - Key: Brand
+        Values:
+        - D-Queen
+        - Phytheon
+        - Liu Xo
+      - Key: Jewel
+        Values:
+        - Emerald
+        - Honey Topaz
+        - Ruby
+        - Sapphine
+      Prototype: {fileID: 2325164575644152457, guid: 6d55c575858a0a943b578263d929f97e,
+        type: 3}
+      AppearancesKey: Jewel
+      ItemAppearances:
+      - Value: Emerald
+        Sprite: {fileID: 21300000, guid: f27979fcc9f4cd84a8b7d49e30916aa1, type: 3}
+      - Value: Honey Topaz
+        Sprite: {fileID: 21300000, guid: 193488aa096d1064f9643917aca8c4e0, type: 3}
+      - Value: Ruby
+        Sprite: {fileID: 21300000, guid: a868b74cf7dde7a4baab327b602d37b4, type: 3}
+      - Value: Sapphine
+        Sprite: {fileID: 21300000, guid: a22f3eeb8de120e449a93b9312086fa1, type: 3}
+    - Name: Phone
+      CanBeSubSet: 1
+      CanBeSuperSet: 0
+      Exclusive: 0
+      ItemProperties:
+      - Key: Brand
+        Values:
+        - Legazy
+        - Olympus
+        - Kong Tao
+        - Pixer
+        - GenTech
+      - Key: Color
+        Values:
+        - Blue
+        - Green
+        - Light Blue
+        - Red
+        - White
+        - Yellow
+      Prototype: {fileID: 2325164575644152457, guid: 6d55c575858a0a943b578263d929f97e,
+        type: 3}
+      AppearancesKey: Color
+      ItemAppearances:
+      - Value: Blue
+        Sprite: {fileID: 21300000, guid: 0987297d415761d499c6f59f2127b52c, type: 3}
+      - Value: Green
+        Sprite: {fileID: 21300000, guid: ac8ca813e18d6d64e9143e16dcca2411, type: 3}
+      - Value: Light Blue
+        Sprite: {fileID: 21300000, guid: 749d10f7e7d36e9459677185215a3a62, type: 3}
+      - Value: Red
+        Sprite: {fileID: 21300000, guid: 185a5828d9e50d84380cfae0d26d3a9a, type: 3}
+      - Value: White
+        Sprite: {fileID: 21300000, guid: 588aa0386021b454792071ce82e8458f, type: 3}
+      - Value: Yellow
+        Sprite: {fileID: 21300000, guid: 6045ddd52d506a848bde2fca8c9733f5, type: 3}
+    - Name: Ring
+      CanBeSubSet: 0
+      CanBeSuperSet: 1
+      Exclusive: 0
+      ItemProperties:
+      - Key: Brand
+        Values:
+        - D-Queen
+        - Phytheon
+        - Liu Xo
+      - Key: Jewel
+        Values:
+        - Emerald
+        - Honey Topaz
+        - Ruby
+        - Sapphine
+      Prototype: {fileID: 2325164575644152457, guid: 6d55c575858a0a943b578263d929f97e,
+        type: 3}
+      AppearancesKey: Jewel
+      ItemAppearances:
+      - Value: Emerald
+        Sprite: {fileID: 21300000, guid: 37da2dfe9ff278e40967cf2499e1da1b, type: 3}
+      - Value: Honey Topaz
+        Sprite: {fileID: 21300000, guid: bc634147ad54181489238c7320182a51, type: 3}
+      - Value: Ruby
+        Sprite: {fileID: 21300000, guid: 094bbbe91d5b6ce45a1ea6b4786fd742, type: 3}
+      - Value: Sapphine
+        Sprite: {fileID: 21300000, guid: 9ae0b91f000f4054bba6ff5768cc28cf, type: 3}
+    - Name: Smart Pen
+      CanBeSubSet: 1
+      CanBeSuperSet: 0
+      Exclusive: 0
+      ItemProperties:
+      - Key: Brand
+        Values:
+        - Legazy
+        - Olympus
+        - Kong Tao
+        - Pixer
+        - Zenon
+        - GenTech
+      - Key: Color
+        Values:
+        - Green
+        - Orange
+        - Red
+        - White
+        - Yellow
+      Prototype: {fileID: 2325164575644152457, guid: 6d55c575858a0a943b578263d929f97e,
+        type: 3}
+      AppearancesKey: Color
+      ItemAppearances:
+      - Value: Green
+        Sprite: {fileID: 21300000, guid: 58212e9625a39a6439e589e700e9a0f3, type: 3}
+      - Value: Orange
+        Sprite: {fileID: 21300000, guid: bafb344094a3a544e94c321a9b339d4e, type: 3}
+      - Value: Red
+        Sprite: {fileID: 21300000, guid: 7f3fdfb7f0869924bba8aa9f1506e505, type: 3}
+      - Value: White
+        Sprite: {fileID: 21300000, guid: 8eb99a839013b1a46881f3780d8b7f1f, type: 3}
+      - Value: Yellow
+        Sprite: {fileID: 21300000, guid: 9bb1026179527fa44935e6455df54db3, type: 3}
+    - Name: Tablet
+      CanBeSubSet: 1
+      CanBeSuperSet: 0
+      Exclusive: 0
+      ItemProperties:
+      - Key: Brand
+        Values:
+        - Legazy
+        - Olympus
+        - Kong Tao
+        - Pixer
+        - Zenon
+        - GenTech
+      - Key: Color
+        Values:
+        - Blue
+        - Green
+        - Orange
+        - Red
+        - Yellow
+      Prototype: {fileID: 2325164575644152457, guid: 6d55c575858a0a943b578263d929f97e,
+        type: 3}
+      AppearancesKey: Color
+      ItemAppearances:
+      - Value: Blue
+        Sprite: {fileID: 21300000, guid: 1b6d65dc229399f47b4eaaee59414e6e, type: 3}
+      - Value: Green
+        Sprite: {fileID: 21300000, guid: 8ee18f00b67b8cb40a9e9daae7aa3bd1, type: 3}
+      - Value: Orange
+        Sprite: {fileID: 21300000, guid: ac6314a57c98833449c636737f5e20b2, type: 3}
+      - Value: Red
+        Sprite: {fileID: 21300000, guid: 616861d8674685e4481f0780add6546d, type: 3}
+      - Value: Yellow
+        Sprite: {fileID: 21300000, guid: 06b167eab8ae4454ab42ed8c9ca2f054, type: 3}
+    - Name: Wallet
+      CanBeSubSet: 1
+      CanBeSuperSet: 1
+      Exclusive: 1
+      ItemProperties:
+      - Key: Brand
+        Values:
+        - Legazy
+        - Olympus
+        - Kong Tao
+        - Pixer
+        - Zenon
+        - GenTech
+      - Key: Color
+        Values:
+        - Black
+        - Brown
+        - Green
+        - Red
+        - White
+      Prototype: {fileID: 2325164575644152457, guid: 6d55c575858a0a943b578263d929f97e,
+        type: 3}
+      AppearancesKey: Color
+      ItemAppearances:
+      - Value: Black
+        Sprite: {fileID: 21300000, guid: 3c2cdde42d02e514699c94eaa7177d06, type: 3}
+      - Value: Brown
+        Sprite: {fileID: 21300000, guid: 0b6e8d12947c03f45a8b1c32dd5b7a35, type: 3}
+      - Value: Green
+        Sprite: {fileID: 21300000, guid: e559fce319b8b3143b837629d3d32dcf, type: 3}
+      - Value: Red
+        Sprite: {fileID: 21300000, guid: d8611d0322c4dbe4e940de7759f24f2e, type: 3}
+      - Value: White
+        Sprite: {fileID: 21300000, guid: bf93bb2dbbc9a5345b2234c1bcf5bad2, type: 3}
     - Name: Watch
       CanBeSubSet: 1
       CanBeSuperSet: 0
@@ -52,9 +376,10 @@ MonoBehaviour:
       ItemProperties:
       - Key: Brand
         Values:
-        - Alpaca
-        - Bacon
-        - Cinamon
+        - Legazy
+        - Olympus
+        - Kong Tao
+        - Pixer
       - Key: Color
         Values:
         - Blue

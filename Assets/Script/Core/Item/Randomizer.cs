@@ -55,7 +55,11 @@ public class Randomizer
         PropertyItem property = new PropertyItem();
         property.GeneratedItem = generated;
         property.Prototype = item.Prototype;
-        string propertyAppearance = generated.Property[item.AppearancesKey];
+        string propertyAppearance;
+        if (!generated.Property.TryGetValue(item.AppearancesKey, out propertyAppearance))
+        {
+            throw new Exception();
+        }
         property.Appearance = item.ItemAppearances.First(i => i.Value == propertyAppearance).Sprite;
         return property;
     }
