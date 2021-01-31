@@ -16,9 +16,10 @@ public class Emoticon : MonoBehaviour
     public void Show()
     {
         Sequence?.Kill();
+        Showing.SetActive(true);
         Sequence = DOTween.Sequence()
             .Append(transform.DOLocalMoveY(MoveY, MoveDuration))
-            .OnKill(() => Showing.SetActive(false))
+            .OnComplete(() => Showing.SetActive(false))
             .Play();
     }
 }
