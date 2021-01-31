@@ -11,31 +11,39 @@ public class TalkPopup : PanelBehaviour
     public float CloseDelay = 3f;
 
     private float CloseTime;
+    
+    private bool cancle;
+
+    private Coroutine Coroutine;
 
     public void SetText(string text)
     {
         Text.text = text;
     }
 
-    public void WaitAndClose()
+    public void Cancle()
     {
-        CloseTime = CloseDelay + Time.time;
-        if (!IsOpen)
+        if (Coroutine != null)
         {
-            Open();
-            WaitAndCloseAsync();
+            StopCoroutine(Coroutine);
+            Coroutine = null;
         }
     }
 
-    private async void WaitAndCloseAsync()
+    public void WaitAndClose()
     {
-        await UniTask.WaitUntil(() => CloseTime < Time.time);
-        Close();
+        CloseTime = CloseDelay + Time.time;
+        if (Coroutine == null)
+        {
+            Open();
+            Coroutine = StartCoroutine(WaitAndCloseRoutine());
+        }
     }
 
-    public override UniTask CloseAsync()
+    private IEnumerator WaitAndCloseRoutine()
     {
-        CloseTime = Time.time - 1;
-        return base.CloseAsync();
+        yield return new WaitUntil (() => CloseTime < Time.time);
+        Close();
+        Coroutine = null;
     }
 }

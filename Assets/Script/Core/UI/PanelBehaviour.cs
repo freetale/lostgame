@@ -10,6 +10,8 @@ public class PanelBehaviour : MonoBehaviour
 
     public float AnimationTime { get; } = 0.2f;
 
+    protected Sequence Sequence;
+
     public void Toggle()
     {
         if (IsOpen)
@@ -31,7 +33,10 @@ public class PanelBehaviour : MonoBehaviour
     {
         IsOpen = true;
         gameObject.SetActive(true);
-        await transform.DOScale(1, AnimationTime).SetEase(Ease.OutBack);
+        Sequence?.Kill();
+        Sequence = DOTween.Sequence()
+            .Append(transform.DOScale(1, AnimationTime).SetEase(Ease.OutBack));
+        await Sequence;
     }
 
     public virtual void Close()
@@ -42,9 +47,11 @@ public class PanelBehaviour : MonoBehaviour
     public virtual async UniTask CloseAsync()
     {
         IsOpen = false;
-        await transform.DOScale(0, AnimationTime)
-            .SetEase(Ease.InBack)
-            .OnComplete(() => gameObject.SetActive(false));
+        Sequence?.Kill();
+        Sequence = DOTween.Sequence()
+             .Append(transform.DOScale(0, AnimationTime)).SetEase(Ease.InBack)
+             .OnComplete(() => gameObject.SetActive(false));
+        await Sequence;
     }
 
 #if UNITY_EDITOR

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using UnityEngine;
 
@@ -19,7 +20,7 @@ public class ItemInfo
     /// item was trash and drop satisfaction of customer
     /// </summary>
     public bool WasTrash;
-
+    public string OwnerName;
     public List<ItemInfo> SubItem { get; } = new List<ItemInfo>();
 
     public ItemInfo CloneWithNewID()
@@ -49,10 +50,44 @@ public class ItemInfo
         StringBuilder sb = new StringBuilder();
         foreach (var item in Property)
         {
-            sb.Append(item.Value);
+            var value = item.Value;
+            //Spaciala value
+            if (value == "#NAME#")
+            {
+                value = OwnerName;
+            }
+            sb.Append(value);
             sb.Append(" ");
         }
         sb.Append(Name);
+        return sb.ToString();
+    }
+
+    public string GetInfoString()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine(Name);
+        sb.AppendFormat("Found: {0} {1}", Room, Location);
+        sb.AppendLine();
+        bool firstProp = true;
+        foreach (var item in Property)
+        {
+            if (firstProp)
+            {
+                firstProp = false;
+            }
+            else
+            {
+                sb.Append(", ");
+            }
+            var value = item.Value;
+            //Spaciala value
+            if (value == "#NAME#")
+            {
+                value = OwnerName;
+            }
+            sb.AppendFormat("{0}-{1}", item.Key, value);
+        }
         return sb.ToString();
     }
 }

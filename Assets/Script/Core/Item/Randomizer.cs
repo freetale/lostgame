@@ -38,6 +38,7 @@ public class Randomizer
         generated.Guid = Guid.NewGuid();
         generated.Room = room.PickRandom();
         generated.Location = location.PickRandom();
+        generated.OwnerName = RandomName();
 
         for (int i = 0; i < item.ItemProperties.Length; i++)
         {
@@ -76,7 +77,7 @@ public class Randomizer
         return info;
     }
 
-    private TodayRandom GetTodayRandom(int date, int itemcount)
+    private TodayRandom GetTodayRandom(int date, int itemcount, int relaytive, int imposter)
     {
         List<ItemInfo> items = new List<ItemInfo>();
         for (int i = 0; i < itemcount; i++)
@@ -89,9 +90,38 @@ public class Randomizer
         for (int i = 0; i < itemcount; i++)
         {
             var character = RandomCharacter();
-            character.LookingForItem = items[i].Clone();
+            ItemInfo itemInfo = items[i].Clone();
+            if (i < relaytive)
+            {
+                if (UnityEngine.Random.value < 0.5)
+                {
+                    itemInfo.Location = null;
+                }
+                else
+                {
+                    itemInfo.Room = null;
+                }
+            }
+            character.LookingForItem = itemInfo;
             characters.Add(character);
         }
+        for (int i = 0; i < imposter; i++)
+        {
+            var character = RandomCharacter();
+            var item = items.PickRandom().Clone();
+            if (UnityEngine.Random.value < 0.5)
+            {
+                item.Location = null;
+            }
+            else
+            {
+                item.Room = null;
+            }
+            character.IsImposter = true;
+            character.LookingForItem = item;
+            characters.Add(character);
+        }
+        characters.Shuffle();
         var today = new TodayRandom()
         {
             Characters = characters.ToArray(),
@@ -100,14 +130,22 @@ public class Randomizer
         return today;
     }
 
+    private string RandomName()
+    {
+        return string.Format(CharacterListAsset.Name.PickRandom(), CharacterListAsset.LastName.PickRandom());
+    }
+
     public SessionRandom GetSessionRandom()
     {
         SessionRandom session = new SessionRandom() { };
         session.Days = new TodayRandom[7];
-        for (int i = 0; i < 7; i++)
-        {
-            session.Days[i] = GetTodayRandom(i, 7);
-        }
+        session.Days[0] = GetTodayRandom(0, 3, 1, 1);
+        session.Days[1] = GetTodayRandom(1, 3, 0, 0);
+        session.Days[2] = GetTodayRandom(2, 3, 1, 0);
+        session.Days[3] = GetTodayRandom(3, 3, 1, 1);
+        session.Days[4] = GetTodayRandom(4, 3, 1, 1);
+        session.Days[5] = GetTodayRandom(5, 3, 2, 2);
+        session.Days[6] = GetTodayRandom(6, 3, 2, 2);
         return session;
     }
 

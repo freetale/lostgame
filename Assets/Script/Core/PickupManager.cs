@@ -22,6 +22,8 @@ public class PickupManager : MonoBehaviour
     public Action<ItemPrototype> OnPickup;
     public Action<ItemPrototype, IDropItemable> OnDropdown;
 
+    public AudioClip ClickSound;
+
     private void Start()
     {
         if (!Camera)
@@ -46,6 +48,7 @@ public class PickupManager : MonoBehaviour
         }
         if (isUp)
         {
+            GameplayManager.Instance.PlayerSfx(ClickSound);
             if (keyDownTime + ClickTrashold > Time.unscaledTime)
             {
                 if (pickitem != null)

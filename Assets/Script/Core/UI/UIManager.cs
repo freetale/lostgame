@@ -24,19 +24,30 @@ public class UIManager : MonoBehaviour
 
     public void SetTalkText(string v)
     {
+        TalkPopup.Cancle();
         TalkPopup.SetText(v);
         TalkPopup.WaitAndClose();
     }
 
     public void SetPoliceText(string v)
     {
+        PolicePopup.Cancle();
         PolicePopup.SetText(v);
         PolicePopup.WaitAndClose();
     }
 
     internal void EndDay(DailyScore score)
     {
+        Debug.Log("EndDay");
         EndDayUI.SetInfomation(score);
+        EndDayUI.Open();
+    }
+
+    internal void EndWeek(DailyScore total)
+    {
+        Debug.Log("EndWeek");
+        EndDayUI.SetInfomation(total);
+        EndDayUI.SetButton("Mainmenu");
         EndDayUI.Open();
     }
 
@@ -52,8 +63,8 @@ public class UIManager : MonoBehaviour
 
     internal void HideUserUI()
     {
-        PolicePopup.Close();
-        TalkPopup.Close();
+        //PolicePopup.Close();
+        //TalkPopup.Close();
         DescriptionPopup.Close();
         CallForPolicePopup.Close();
         QuationPopup.Close();
@@ -70,5 +81,10 @@ public class UIManager : MonoBehaviour
     public void SetQuationSubmitItem(bool canSubmit)
     {
         QuationPopup.SetSubmitItem(canSubmit);
+    }
+
+    internal void ClearTalkText()
+    {
+        TalkPopup.Close();
     }
 }

@@ -1,13 +1,17 @@
 ﻿using Cysharp.Threading.Tasks;
+using NaughtyAttributes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameplayManager : MonoBehaviour
 {
+    public const int MaxStatisfaction = 10;
     public DailyScore Today;
-
+    [NonSerialized]
+    public List<DailyScore> AllDays = new List<DailyScore>();
     public static GameplayManager Instance { get; private set; }
 
     public ItemPool ItemPool;
@@ -34,9 +38,12 @@ public class GameplayManager : MonoBehaviour
 
     public float SecondPerDay = 60;
     public float DialogueInterval = 3f;
+    [ShowNonSerializedField]
     private float currentTime;
 
+    [ShowNonSerializedField]
     private bool IsOpenTime;
+    [ShowNonSerializedField]
     private bool IsVisiting;
 
     [NonSerialized]
@@ -51,13 +58,16 @@ public class GameplayManager : MonoBehaviour
     [NonSerialized]
     private CharacterInfo CurrentCustomer;
 
-    [NaughtyAttributes.ShowNativeProperty]
+    [ShowNativeProperty]
     public int StandAloneCount => StandAloneItem.Count;
 
-    [NaughtyAttributes.ShowNonSerializedField]
+    [ShowNonSerializedField]
     private int CurrentDayIndex = 0;
 
     private SessionRandom SessionRandom;
+
+    [Scene]
+    public string MainMenu;
 
     private void Awake()
     {
@@ -71,6 +81,7 @@ public class GameplayManager : MonoBehaviour
         TalkComputer.OnInteract = () => UIManager.QuationPopup.Toggle();
         UIManager.CallForPolicePopup.OnCallPolice = OnCallPolice;
         UIManager.QuationPopup.Action = OnQuation;
+        UIManager.OnNextDay = OnNextDay;
         PickupManager.OnPickup = OnPickUp;
         PickupManager.OnDropdown = OnDropDown;
         ItemSpawner.OnSpawn = OnSpawn;
@@ -79,7 +90,7 @@ public class GameplayManager : MonoBehaviour
 
     private void Start()
     {
-        ResetDay();
+        ResetDayTimer();
         SessionRandom = Randomizer.GetSessionRandom();
         UpdateDay(0);
         CustomerComing();
@@ -90,7 +101,7 @@ public class GameplayManager : MonoBehaviour
         if (currentTime > 0)
         {
             currentTime -= Time.deltaTime;
-            if (currentTime == 0)
+            if (currentTime <= 0)
             {
                 currentTime = 0;
                 OnDayEnd();
@@ -114,9 +125,11 @@ public class GameplayManager : MonoBehaviour
     {
         CurrentDayIndex = index;
         var todayRandom = SessionRandom.Days[index];
+        YesterDayCustomer.Clear();
+        YesterDayCustomer.AddRange(TodayCustomer);
+        TodayCustomer.Clear();
         TodayCustomer.AddRange(todayRandom.Characters);
         ItemSpawner.Spawn(todayRandom.ItemInfo);
-
     }
 
     private void CustomerComing()
@@ -143,17 +156,19 @@ public class GameplayManager : MonoBehaviour
     private void OnSpawn(ItemPrototype obj)
     {
         StandAloneItem.Add(obj);
+        UIManager.SetQuationSubmitItem(StandAloneItem.Count == 1);
     }
 
     private async UniTask SummonCustomer(CharacterInfo characterInfo)
     {
+        IsVisiting = true;
         CurrentCustomer = characterInfo;
         CharacterControlGroup.Bind(characterInfo);
         await CharacterControlGroup.Play(CharacterAnimation.MoveIn);
         UIManager.SetTalkText(string.Format(TalkScriptAsset.InComing, characterInfo.LookingForItem.Name, characterInfo.Name));
     }
 
-    private void CharacterExit()
+    private void OnCharacterExit()
     {
         CurrentCustomer = null;
         IsVisiting = false;
@@ -173,11 +188,18 @@ public class GameplayManager : MonoBehaviour
         {
             return;
         }
+        CallPolice().Forget();
+    }
+
+    private async UniTask CallPolice()
+    {
         var isThift = CurrentCustomer.IsImposter;
         CurrentCustomer = null;
-        IsVisiting = false;
         UIManager.HideUserUI();
-        PoliceComingAsync(isThift).Forget();
+        if (isThift) Today.ImposterCapture++;
+        else Today.InnocentCapture++;
+        await PoliceComingAsync(isThift);
+        OnCharacterExit();
     }
 
     private async UniTask PoliceComingAsync(bool isThift)
@@ -201,6 +223,39 @@ public class GameplayManager : MonoBehaviour
             await CharacterControlGroup.Play(CharacterAnimation.PoliceMoveout);
         }
     }
+    public void OnNextDay()
+    {
+        CurrentDayIndex++;
+        UIManager.EndDayUI.Close();
+        if (CurrentDayIndex == 2)
+        {
+            DailyScore total = new DailyScore();
+            for (int i = 0; i < AllDays.Count; i++)
+            {
+                DailyScore score = AllDays[i];
+                total.TotalCustomer = score.TotalCustomer;
+                total.ImposterCapture = score.ImposterCapture;
+                total.ImposterGetAway = score.ImposterGetAway;
+                total.InnocentCapture = score.InnocentCapture;
+                total.CustomerStilMissing = score.CustomerStilMissing;
+                total.MaxSatisfaction = score.MaxSatisfaction;
+                total.Satisfaction = score.Satisfaction;
+            }
+            UIManager.EndWeek(total);
+        }
+        else if(CurrentDayIndex == 3) // exit
+        {
+            SceneManager.LoadScene(MainMenu);
+        }
+        else
+        {
+            AllDays.Add(Today);
+            Today = new DailyScore();
+            ResetDayTimer();
+            UpdateDay(CurrentDayIndex);
+            CustomerComing();
+        }
+    }
 
     private void OnQuation(QuationAction quation)
     {
@@ -212,7 +267,7 @@ public class GameplayManager : MonoBehaviour
         UIManager.SetTalkText(text);
         if (quation != QuationAction.HereYouAre)
         {
-            CurrentCustomer.Satisfaction--;
+            CurrentCustomer.Satisfaction = Mathf.Max(CurrentCustomer.Satisfaction - 1, 0);
         }
         if (quation == QuationAction.CameBackTomorrow)
         {
@@ -220,16 +275,22 @@ public class GameplayManager : MonoBehaviour
         }
     }
 
-    private string GetQuation(QuationAction quation, ItemInfo looking, bool yesterday, bool isImposter)
+    private string GetQuation(QuationAction quation, ItemInfo looking, bool today, bool isImposter)
     {
         switch (quation)
         {
             case QuationAction.WhichRoom:
+                if (looking.Room == null)
+                    return TalkScriptAsset.DontKnow;
                 return string.Format(TalkScriptAsset.WhichRoom, looking.Room);
             case QuationAction.LostDate:
-                if (yesterday) return TalkScriptAsset.DateYesterday;
-                else return TalkScriptAsset.DateToday;
+                if (today)
+                    return TalkScriptAsset.DateToday;
+                else
+                    return TalkScriptAsset.DateYesterday;
             case QuationAction.LastSeen:
+                if (looking.Room == null)
+                    return TalkScriptAsset.DontKnow;
                 return string.Format(TalkScriptAsset.Where, looking.Location);
             case QuationAction.WhatLostItem:
                 if (looking.SubItem.Count > 0)
@@ -268,31 +329,49 @@ public class GameplayManager : MonoBehaviour
 
     private async UniTask CustommerComeTomorrow()
     {
+        UIManager.HideUserUI();
         WaitingCustomer.Add(CurrentCustomer);
+        Today.TotalCustomer++;
+        //Today.MaxSatisfaction += MaxStatisfaction;
+        //Today.Satisfaction += CurrentCustomer.Satisfaction;
+
         CurrentCustomer = null;
         await UniTask.Delay(TimeSpan.FromSeconds(DialogueInterval));
         await CharacterControlGroup.Play(CharacterAnimation.MoveOut);
-        CharacterExit();
+        UIManager.ClearTalkText();
+        OnCharacterExit();
     }
 
     private async UniTask CustomerTakeAway()
     {
+        UIManager.HideUserUI();
+        Today.TotalCustomer++;
+        Today.MaxSatisfaction += MaxStatisfaction;
+        Today.Satisfaction += CurrentCustomer.Satisfaction;
+
         CurrentCustomer = null;
-        ReturnOneItemToPool();
+        var trashed = ReturnOneItemToPool();
+        CharacterControlGroup.SetEmoticon(trashed ? Emotion.Angry : Emotion.Happy);
         await CharacterControlGroup.Play(CharacterAnimation.MoveOut);
-        CharacterExit();
+        UIManager.ClearTalkText();
+        OnCharacterExit();
     }
 
     private async UniTask ImposterTakeAway()
     {
+        UIManager.HideUserUI();
         CurrentCustomer = null;
-        ReturnOneItemToPool();
+        Today.ImposterGetAway++;
+
+        var trashed =  ReturnOneItemToPool();
+        CharacterControlGroup.SetEmoticon(trashed ? Emotion.Angry : Emotion.Happy);
         await CharacterControlGroup.Play(CharacterAnimation.MoveOut);
+        UIManager.ClearTalkText();
         await UIManager.ShowBossMessage(TalkScriptAsset.BossThiftNotify);
-        CharacterExit();
+        OnCharacterExit();
     }
 
-    private void ReturnOneItemToPool()
+    private bool ReturnOneItemToPool()
     {
         if (StandAloneItem.Count != 1)
         {
@@ -301,6 +380,8 @@ public class GameplayManager : MonoBehaviour
         var item = StandAloneItem[0];
         StandAloneItem.RemoveAt(0);
         ItemPool.Return(item);
+        UIManager.SetQuationSubmitItem(StandAloneItem.Count == 1);
+        return item.ItemInfo.WasTrash;
     }
 
     private void ShowEndDayUI()
@@ -308,10 +389,11 @@ public class GameplayManager : MonoBehaviour
         UIManager.EndDay(Today);
     }
 
-    private void ResetDay()
+    private void ResetDayTimer()
     {
         currentTime = SecondPerDay;
         IsOpenTime = true;
+        IsVisiting = false;
     }
 
     private void OnPickUp(ItemPrototype item)
@@ -324,7 +406,10 @@ public class GameplayManager : MonoBehaviour
         }
         item.OnPick();
         if (!StandAloneItem.Contains(item))
+        {
             StandAloneItem.Add(item);
+            UIManager.SetQuationSubmitItem(StandAloneItem.Count == 1);
+        }
     }
 
     private void OnDropDown(ItemPrototype item, IDropItemable reciver)
@@ -332,6 +417,7 @@ public class GameplayManager : MonoBehaviour
         if (reciver != null && reciver.IsEmpty && reciver.CanDrop(item))
         {
             StandAloneItem.Remove(item);
+            UIManager.SetQuationSubmitItem(StandAloneItem.Count == 1);
             item.AttachTo = reciver;
             item.OnDrop();
             item.OnEnterSlot();
@@ -350,19 +436,19 @@ public class GameplayManager : MonoBehaviour
         {
             Debug.Log("Inspecting" + item.ItemInfo.GetDescriptionString());
             UIManager.OpenDescription(item.ItemInfo);
-            InspectPopup.Bind(item);
-            if (!InspectPopup.IsOpen)
-            {
-                InspectPopup.Open();
-            }
+            //InspectPopup.Bind(item);
+            //if (!InspectPopup.IsOpen)
+            //{
+            //    //InspectPopup.Open(); // not allow to inspect
+            //}
         }
         else
         {
-            if (InspectPopup.IsOpen)
-            {
-                UIManager.CloseDescription();
-                InspectPopup.Close();
-            }
+            //if (InspectPopup.IsOpen)
+            //{
+            //    UIManager.CloseDescription();
+            //    InspectPopup.Close();
+            //}
         }
     }
 
@@ -381,14 +467,3 @@ public struct SaveData
     public int Today;
 }
 
-public struct DailyScore
-{
-    public int TotalCustomer;
-    public int ImposterCapture;
-    public int ImposterGetAway;
-    public int InnocentGetAways;
-    public int CustomerStilMissing;
-    public int PendingItemCount;
-    public int MaxSatisfaction;
-    public int Satisfaction;
-}

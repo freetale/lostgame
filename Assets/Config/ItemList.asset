@@ -421,4 +421,8 @@ MonoBehaviour:
     - on bed
     - under pillow
     - in safe
-    InvalidLocation: []
+    - on table
+    InvalidLocation:
+    - on table
+    - under pillow
+    - in safe

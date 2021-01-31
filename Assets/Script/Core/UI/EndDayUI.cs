@@ -15,6 +15,7 @@ public class EndDayUI : PanelBehaviour
     public TMP_Text Satisfaction;
 
     public Button NextDayButton;
+    public TMP_Text NextDayText;
 
     public Action OnNextDay;
 
@@ -33,10 +34,14 @@ public class EndDayUI : PanelBehaviour
         TotalCustomerText.text = score.TotalCustomer.ToString();
         ImposterCaptureText.text = score.ImposterCapture.ToString();
         ImposterGetAways.text = score.ImposterGetAway.ToString();
-        InnocentCapture.text = score.InnocentGetAways.ToString();
+        InnocentCapture.text = score.InnocentCapture.ToString();
         CustomerStilMissing.text = score.CustomerStilMissing.ToString();
         int satisfaction = (int)((float)score.Satisfaction / score.MaxSatisfaction * 100);
         Satisfaction.text = satisfaction.ToString() + "%";
     }
 
+    public void SetButton(string text)
+    {
+        NextDayText.text = text;
+    }
 }

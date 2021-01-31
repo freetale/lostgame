@@ -14,6 +14,8 @@ public class TrashPrototype : MonoBehaviour, IDropItemable, IInteractable
     public TrashPopup TrashPopup;
     public SlotPrototype[] TrashSlot => TrashPopup.TrashSlot;
 
+    public AudioClip TrashSound;
+
     public bool IsEmpty { get; } = true;
 
     public bool CanDrop(ItemPrototype pickitem)
@@ -57,7 +59,7 @@ public class TrashPrototype : MonoBehaviour, IDropItemable, IInteractable
         prototype.AttachTo = slot;
         slot.ItemEnter(prototype);
         prototype.OnEnterSlot();
-
+        GameplayManager.Instance.PlayerSfx(TrashSound);
     }
 
     public void ItemLeave(ItemPrototype prototype)

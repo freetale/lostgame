@@ -47,7 +47,7 @@ public class TalkScriptAsset
     /// <summary>
     /// 0 for owner
     /// </summary>
-    public string DontKnow = "I don’t know my {0} told me to get it";
+    public string DontKnow = "I don’t know";
 
     /// <summary>
     /// Here you are

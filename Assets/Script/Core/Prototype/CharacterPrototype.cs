@@ -16,8 +16,8 @@ public class CharacterPrototype : MonoBehaviour
     public SpriteRenderer BodyRenderer;
     public SpriteRenderer HairRenderer;
 
-    public GameObject AngryIcon;
-    public GameObject HappyIcon;
+    public Emoticon AngryIcon;
+    public Emoticon HappyIcon;
 
     public CharacterListAsset CharacterListAsset;
 
@@ -38,8 +38,10 @@ public class CharacterPrototype : MonoBehaviour
 
     public void SetEmotion(Emotion emotion)
     {
-        AngryIcon.SetActive(emotion == Emotion.Angry);
-        HappyIcon.SetActive(emotion == Emotion.Happy);
+        if (emotion == Emotion.Angry)
+            AngryIcon.Show();
+        if (emotion == Emotion.Happy)
+            HappyIcon.Show();
     }
 
 }
