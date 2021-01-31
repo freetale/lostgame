@@ -9,6 +9,8 @@ using UnityEngine.SceneManagement;
 public class GameplayManager : MonoBehaviour
 {
     public const int MaxStatisfaction = 10;
+    public const int TrashStatisfaction = 3;
+
     public DailyScore Today;
     [NonSerialized]
     public List<DailyScore> AllDays = new List<DailyScore>();
@@ -100,7 +102,12 @@ public class GameplayManager : MonoBehaviour
     {
         if (currentTime > 0)
         {
-            currentTime -= Time.deltaTime;
+            float timescale = 1;
+            if (TodayCustomer.Count == 0)
+            {
+                timescale = 4;
+            }
+            currentTime -= Time.deltaTime * timescale;
             if (currentTime <= 0)
             {
                 currentTime = 0;
@@ -227,7 +234,7 @@ public class GameplayManager : MonoBehaviour
     {
         CurrentDayIndex++;
         UIManager.EndDayUI.Close();
-        if (CurrentDayIndex == 2)
+        if (CurrentDayIndex == 7)
         {
             DailyScore total = new DailyScore();
             for (int i = 0; i < AllDays.Count; i++)
@@ -243,7 +250,7 @@ public class GameplayManager : MonoBehaviour
             }
             UIManager.EndWeek(total);
         }
-        else if(CurrentDayIndex == 3) // exit
+        else if(CurrentDayIndex > 8) // exit
         {
             SceneManager.LoadScene(MainMenu);
         }
@@ -345,12 +352,13 @@ public class GameplayManager : MonoBehaviour
     private async UniTask CustomerTakeAway()
     {
         UIManager.HideUserUI();
+        var trashed = ReturnOneItemToPool();
         Today.TotalCustomer++;
         Today.MaxSatisfaction += MaxStatisfaction;
-        Today.Satisfaction += CurrentCustomer.Satisfaction;
+        var satisfaction = CurrentCustomer.Satisfaction;
+        Today.Satisfaction += satisfaction; 
 
         CurrentCustomer = null;
-        var trashed = ReturnOneItemToPool();
         CharacterControlGroup.SetEmoticon(trashed ? Emotion.Angry : Emotion.Happy);
         await CharacterControlGroup.Play(CharacterAnimation.MoveOut);
         UIManager.ClearTalkText();

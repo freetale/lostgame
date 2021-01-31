@@ -4549,9 +4549,9 @@ MonoBehaviour:
   UIManager: {fileID: 1984779927}
   InspectPopup: {fileID: 1198828195}
   ItemSpawner: {fileID: 1081138756}
-  SecondPerDay: 15
+  SecondPerDay: 150
   DialogueInterval: 3
-  MainMenu: GameplayScene
+  MainMenu: Mainmenu
 --- !u!4 &1224164491
 Transform:
   m_ObjectHideFlags: 0

@@ -36,7 +36,10 @@ public class EndDayUI : PanelBehaviour
         ImposterGetAways.text = score.ImposterGetAway.ToString();
         InnocentCapture.text = score.InnocentCapture.ToString();
         CustomerStilMissing.text = score.CustomerStilMissing.ToString();
-        int satisfaction = (int)((float)score.Satisfaction / score.MaxSatisfaction * 100);
+        int satisfaction = 0;
+        if (score.MaxSatisfaction > 0)
+            satisfaction = (int)((float)score.Satisfaction / score.MaxSatisfaction * 100);
+        
         Satisfaction.text = satisfaction.ToString() + "%";
     }
 

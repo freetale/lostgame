@@ -17,6 +17,7 @@ public class Emoticon : MonoBehaviour
     {
         Sequence?.Kill();
         Showing.SetActive(true);
+        transform.localPosition = Vector3.zero;
         Sequence = DOTween.Sequence()
             .Append(transform.DOLocalMoveY(MoveY, MoveDuration))
             .OnComplete(() => Showing.SetActive(false))
